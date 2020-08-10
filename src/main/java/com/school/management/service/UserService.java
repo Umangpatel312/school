@@ -5,6 +5,8 @@ import com.school.management.dto.UserDTO;
 public class UserService {
 
   public UserDTO getUser(Long id) {
-    return new UserDTO("John", "Doe");
+    UserDTO userDTO = new UserDTO("John", "Doe");
+    System.out.println(userDTO);
+    return userDTO;
   }
 }
