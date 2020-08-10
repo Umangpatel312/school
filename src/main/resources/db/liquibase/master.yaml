@@ -1,0 +1,704 @@
+databaseChangeLog:
+- changeSet:
+    id: 1597042286070-1
+    author: tarang (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+            name: id
+            type: INT
+        - column:
+            defaultValueComputed: CURRENT_TIMESTAMP
+            name: date
+            type: timestamp
+        tableName: attendence
+- changeSet:
+    id: 1597042286070-2
+    author: tarang (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+            name: id
+            type: INT
+        - column:
+            name: address
+            type: VARCHAR(60)
+        - column:
+            name: city
+            type: VARCHAR(45)
+        - column:
+            name: pincode
+            type: INT
+        - column:
+            name: state
+            type: VARCHAR(45)
+        - column:
+            name: country
+            type: VARCHAR(45)
+        tableName: current_address
+- changeSet:
+    id: 1597042286070-3
+    author: tarang (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+            name: id
+            type: INT
+        - column:
+            name: grade
+            type: INT
+        - column:
+            name: division
+            type: CHAR(1)
+        tableName: grade
+- changeSet:
+    id: 1597042286070-4
+    author: tarang (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+            name: id
+            type: INT
+        - column:
+            name: address
+            type: VARCHAR(60)
+        - column:
+            name: city
+            type: VARCHAR(45)
+        - column:
+            name: pincode
+            type: INT
+        - column:
+            name: state
+            type: VARCHAR(45)
+        - column:
+            name: country
+            type: VARCHAR(45)
+        tableName: permenant_address
+- changeSet:
+    id: 1597042286070-5
+    author: tarang (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+            name: id
+            type: INT
+        - column:
+            name: first_name
+            type: VARCHAR(45)
+        - column:
+            name: last_name
+            type: VARCHAR(45)
+        - column:
+            name: email
+            type: VARCHAR(45)
+        tableName: principal
+- changeSet:
+    id: 1597042286070-6
+    author: tarang (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+            name: id
+            type: INT
+        - column:
+            name: principal_id
+            type: INT
+        - column:
+            name: middle_name
+            type: VARCHAR(45)
+        - column:
+            name: mother_name
+            type: VARCHAR(45)
+        - column:
+            name: birth_date
+            type: timestamp
+        - column:
+            name: joining_date
+            type: timestamp
+        - column:
+            name: current_address_id
+            type: INT
+        - column:
+            name: permenant_address_id
+            type: INT
+        tableName: principal_detail
+- changeSet:
+    id: 1597042286070-7
+    author: tarang (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+            name: email
+            type: VARCHAR(45)
+        - column:
+            name: role
+            type: VARCHAR(45)
+        - column:
+            name: password
+            type: VARCHAR(45)
+        tableName: signin_details
+- changeSet:
+    id: 1597042286070-8
+    author: tarang (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+            name: id
+            type: INT
+        - column:
+            name: enrollment_number
+            type: BIGINT
+        - column:
+            name: first_name
+            type: VARCHAR(45)
+        - column:
+            name: last_name
+            type: VARCHAR(45)
+        - column:
+            name: email
+            type: VARCHAR(45)
+        - column:
+            name: grade_id
+            type: INT
+        - column:
+            name: teacher_id
+            type: INT
+        tableName: student
+- changeSet:
+    id: 1597042286070-9
+    author: tarang (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+            name: id
+            type: INT
+        - column:
+            name: student_id
+            type: INT
+        - column:
+            name: attendence_id
+            type: INT
+        - column:
+            name: marked
+            type: CHAR(1)
+        tableName: student_attendence
+- changeSet:
+    id: 1597042286070-10
+    author: tarang (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+            name: id
+            type: INT
+        - column:
+            name: student_id
+            type: INT
+        - column:
+            name: middle_name
+            type: VARCHAR(45)
+        - column:
+            name: mother_name
+            type: VARCHAR(45)
+        - column:
+            name: birth_date
+            type: timestamp
+        - column:
+            name: joining_date
+            type: timestamp
+        - column:
+            name: current_address_id
+            type: INT
+        - column:
+            name: permenant_address_id
+            type: INT
+        tableName: student_detail
+- changeSet:
+    id: 1597042286070-11
+    author: tarang (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+            name: id
+            type: INT
+        - column:
+            name: first_name
+            type: VARCHAR(45)
+        - column:
+            name: last_name
+            type: VARCHAR(45)
+        - column:
+            name: email
+            type: VARCHAR(45)
+        - column:
+            name: principal_id
+            type: INT
+        - column:
+            name: grade_id
+            type: INT
+        tableName: teacher
+- changeSet:
+    id: 1597042286070-12
+    author: tarang (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+            name: id
+            type: INT
+        - column:
+            name: teacher_id
+            type: INT
+        - column:
+            name: middle_name
+            type: VARCHAR(45)
+        - column:
+            name: mother_name
+            type: VARCHAR(45)
+        - column:
+            name: birth_date
+            type: timestamp
+        - column:
+            name: joining_date
+            type: timestamp
+        - column:
+            name: current_address_id
+            type: INT
+        - column:
+            name: permenant_address_id
+            type: INT
+        tableName: teacher_detail
+- changeSet:
+    id: 1597042286070-13
+    author: tarang (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: attendence_id
+        indexName: attendence_id
+        tableName: student_attendence
+- changeSet:
+    id: 1597042286070-14
+    author: tarang (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: current_address_id
+        indexName: current_address_id
+        tableName: principal_detail
+- changeSet:
+    id: 1597042286070-15
+    author: tarang (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: current_address_id
+        indexName: current_address_id
+        tableName: student_detail
+- changeSet:
+    id: 1597042286070-16
+    author: tarang (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: current_address_id
+        indexName: current_address_id
+        tableName: teacher_detail
+- changeSet:
+    id: 1597042286070-17
+    author: tarang (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: grade_id
+        indexName: grade_id
+        tableName: student
+- changeSet:
+    id: 1597042286070-18
+    author: tarang (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: grade_id
+        indexName: grade_id
+        tableName: teacher
+- changeSet:
+    id: 1597042286070-19
+    author: tarang (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: permenant_address_id
+        indexName: permenant_address_id
+        tableName: principal_detail
+- changeSet:
+    id: 1597042286070-20
+    author: tarang (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: permenant_address_id
+        indexName: permenant_address_id
+        tableName: student_detail
+- changeSet:
+    id: 1597042286070-21
+    author: tarang (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: permenant_address_id
+        indexName: permenant_address_id
+        tableName: teacher_detail
+- changeSet:
+    id: 1597042286070-22
+    author: tarang (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: principal_id
+        indexName: principal_id
+        tableName: principal_detail
+- changeSet:
+    id: 1597042286070-23
+    author: tarang (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: principal_id
+        indexName: principal_id
+        tableName: teacher
+- changeSet:
+    id: 1597042286070-24
+    author: tarang (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: student_id
+        indexName: student_id
+        tableName: student_attendence
+- changeSet:
+    id: 1597042286070-25
+    author: tarang (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: student_id
+        indexName: student_id
+        tableName: student_detail
+- changeSet:
+    id: 1597042286070-26
+    author: tarang (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: teacher_id
+        indexName: teacher_id
+        tableName: student
+- changeSet:
+    id: 1597042286070-27
+    author: tarang (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: teacher_id
+        indexName: teacher_id
+        tableName: teacher_detail
+- changeSet:
+    id: 1597042286070-28
+    author: tarang (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: principal_id
+        baseTableName: principal_detail
+        constraintName: principal_detail_ibfk_1
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: CASCADE
+        onUpdate: RESTRICT
+        referencedColumnNames: id
+        referencedTableName: principal
+        validate: true
+- changeSet:
+    id: 1597042286070-29
+    author: tarang (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: current_address_id
+        baseTableName: principal_detail
+        constraintName: principal_detail_ibfk_2
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: RESTRICT
+        onUpdate: RESTRICT
+        referencedColumnNames: id
+        referencedTableName: current_address
+        validate: true
+- changeSet:
+    id: 1597042286070-30
+    author: tarang (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: permenant_address_id
+        baseTableName: principal_detail
+        constraintName: principal_detail_ibfk_3
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: RESTRICT
+        onUpdate: RESTRICT
+        referencedColumnNames: id
+        referencedTableName: permenant_address
+        validate: true
+- changeSet:
+    id: 1597042286070-31
+    author: tarang (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: student_id
+        baseTableName: student_attendence
+        constraintName: student_attendence_ibfk_1
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: RESTRICT
+        onUpdate: RESTRICT
+        referencedColumnNames: id
+        referencedTableName: student
+        validate: true
+- changeSet:
+    id: 1597042286070-32
+    author: tarang (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: attendence_id
+        baseTableName: student_attendence
+        constraintName: student_attendence_ibfk_2
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: RESTRICT
+        onUpdate: RESTRICT
+        referencedColumnNames: id
+        referencedTableName: attendence
+        validate: true
+- changeSet:
+    id: 1597042286070-33
+    author: tarang (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: student_id
+        baseTableName: student_detail
+        constraintName: student_detail_ibfk_1
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: CASCADE
+        onUpdate: RESTRICT
+        referencedColumnNames: id
+        referencedTableName: student
+        validate: true
+- changeSet:
+    id: 1597042286070-34
+    author: tarang (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: current_address_id
+        baseTableName: student_detail
+        constraintName: student_detail_ibfk_2
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: RESTRICT
+        onUpdate: RESTRICT
+        referencedColumnNames: id
+        referencedTableName: current_address
+        validate: true
+- changeSet:
+    id: 1597042286070-35
+    author: tarang (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: permenant_address_id
+        baseTableName: student_detail
+        constraintName: student_detail_ibfk_3
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: RESTRICT
+        onUpdate: RESTRICT
+        referencedColumnNames: id
+        referencedTableName: permenant_address
+        validate: true
+- changeSet:
+    id: 1597042286070-36
+    author: tarang (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: teacher_id
+        baseTableName: student
+        constraintName: student_ibfk_1
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: RESTRICT
+        onUpdate: RESTRICT
+        referencedColumnNames: id
+        referencedTableName: teacher
+        validate: true
+- changeSet:
+    id: 1597042286070-37
+    author: tarang (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: grade_id
+        baseTableName: student
+        constraintName: student_ibfk_2
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: RESTRICT
+        onUpdate: RESTRICT
+        referencedColumnNames: id
+        referencedTableName: grade
+        validate: true
+- changeSet:
+    id: 1597042286070-38
+    author: tarang (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: teacher_id
+        baseTableName: teacher_detail
+        constraintName: teacher_detail_ibfk_1
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: CASCADE
+        onUpdate: RESTRICT
+        referencedColumnNames: id
+        referencedTableName: teacher
+        validate: true
+- changeSet:
+    id: 1597042286070-39
+    author: tarang (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: current_address_id
+        baseTableName: teacher_detail
+        constraintName: teacher_detail_ibfk_2
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: RESTRICT
+        onUpdate: RESTRICT
+        referencedColumnNames: id
+        referencedTableName: current_address
+        validate: true
+- changeSet:
+    id: 1597042286070-40
+    author: tarang (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: permenant_address_id
+        baseTableName: teacher_detail
+        constraintName: teacher_detail_ibfk_3
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: RESTRICT
+        onUpdate: RESTRICT
+        referencedColumnNames: id
+        referencedTableName: permenant_address
+        validate: true
+- changeSet:
+    id: 1597042286070-41
+    author: tarang (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: principal_id
+        baseTableName: teacher
+        constraintName: teacher_ibfk_1
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: RESTRICT
+        onUpdate: RESTRICT
+        referencedColumnNames: id
+        referencedTableName: principal
+        validate: true
+- changeSet:
+    id: 1597042286070-42
+    author: tarang (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: grade_id
+        baseTableName: teacher
+        constraintName: teacher_ibfk_2
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: RESTRICT
+        onUpdate: RESTRICT
+        referencedColumnNames: id
+        referencedTableName: grade
+        validate: true
+
