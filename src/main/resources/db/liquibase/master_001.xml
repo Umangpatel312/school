@@ -1,0 +1,260 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.8.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet author="umang (generated)" id="1597050389157-1">
+        <createTable tableName="attendence">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="date" type="timestamp"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-2">
+        <createTable tableName="current_address">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="address" type="VARCHAR(60)"/>
+            <column name="city" type="VARCHAR(45)"/>
+            <column name="pincode" type="INT"/>
+            <column name="state" type="VARCHAR(45)"/>
+            <column name="country" type="VARCHAR(45)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-3">
+        <createTable tableName="grade">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="grade" type="INT"/>
+            <column name="division" type="CHAR(1)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-4">
+        <createTable tableName="permenant_address">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="address" type="VARCHAR(60)"/>
+            <column name="city" type="VARCHAR(45)"/>
+            <column name="pincode" type="INT"/>
+            <column name="state" type="VARCHAR(45)"/>
+            <column name="country" type="VARCHAR(45)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-5">
+        <createTable tableName="principal">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="first_name" type="VARCHAR(45)"/>
+            <column name="last_name" type="VARCHAR(45)"/>
+            <column name="email" type="VARCHAR(45)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-6">
+        <createTable tableName="principal_detail">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="principal_id" type="INT"/>
+            <column name="middle_name" type="VARCHAR(45)"/>
+            <column name="mother_name" type="VARCHAR(45)"/>
+            <column name="birth_date" type="timestamp"/>
+            <column name="joining_date" type="timestamp"/>
+            <column name="current_address_id" type="INT"/>
+            <column name="permenant_address_id" type="INT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-7">
+        <createTable tableName="signin_details">
+            <column name="email" type="VARCHAR(45)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="role" type="VARCHAR(45)"/>
+            <column name="password" type="VARCHAR(45)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-8">
+        <createTable tableName="student">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="enrollment_number" type="BIGINT"/>
+            <column name="first_name" type="VARCHAR(45)"/>
+            <column name="last_name" type="VARCHAR(45)"/>
+            <column name="email" type="VARCHAR(45)"/>
+            <column name="grade_id" type="INT"/>
+            <column name="teacher_id" type="INT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-9">
+        <createTable tableName="student_attendence">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="student_id" type="INT"/>
+            <column name="attendence_id" type="INT"/>
+            <column name="marked" type="CHAR(1)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-10">
+        <createTable tableName="student_detail">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="student_id" type="INT"/>
+            <column name="middle_name" type="VARCHAR(45)"/>
+            <column name="mother_name" type="VARCHAR(45)"/>
+            <column name="birth_date" type="timestamp"/>
+            <column name="joining_date" type="timestamp"/>
+            <column name="current_address_id" type="INT"/>
+            <column name="permenant_address_id" type="INT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-11">
+        <createTable tableName="teacher">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="first_name" type="VARCHAR(45)"/>
+            <column name="last_name" type="VARCHAR(45)"/>
+            <column name="email" type="VARCHAR(45)"/>
+            <column name="principal_id" type="INT"/>
+            <column name="grade_id" type="INT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-12">
+        <createTable tableName="teacher_detail">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="teacher_id" type="INT"/>
+            <column name="middle_name" type="VARCHAR(45)"/>
+            <column name="mother_name" type="VARCHAR(45)"/>
+            <column name="birth_date" type="timestamp"/>
+            <column name="joining_date" type="timestamp"/>
+            <column name="current_address_id" type="INT"/>
+            <column name="permenant_address_id" type="INT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-13">
+        <createIndex indexName="attendence_id" tableName="student_attendence">
+            <column name="attendence_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-14">
+        <createIndex indexName="current_address_id" tableName="principal_detail">
+            <column name="current_address_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-15">
+        <createIndex indexName="current_address_id" tableName="student_detail">
+            <column name="current_address_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-16">
+        <createIndex indexName="current_address_id" tableName="teacher_detail">
+            <column name="current_address_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-17">
+        <createIndex indexName="grade_id" tableName="student">
+            <column name="grade_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-18">
+        <createIndex indexName="grade_id" tableName="teacher">
+            <column name="grade_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-19">
+        <createIndex indexName="permenant_address_id" tableName="principal_detail">
+            <column name="permenant_address_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-20">
+        <createIndex indexName="permenant_address_id" tableName="student_detail">
+            <column name="permenant_address_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-21">
+        <createIndex indexName="permenant_address_id" tableName="teacher_detail">
+            <column name="permenant_address_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-22">
+        <createIndex indexName="principal_id" tableName="principal_detail">
+            <column name="principal_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-23">
+        <createIndex indexName="principal_id" tableName="teacher">
+            <column name="principal_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-24">
+        <createIndex indexName="student_id" tableName="student_attendence">
+            <column name="student_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-25">
+        <createIndex indexName="student_id" tableName="student_detail">
+            <column name="student_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-26">
+        <createIndex indexName="teacher_id" tableName="student">
+            <column name="teacher_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-27">
+        <createIndex indexName="teacher_id" tableName="teacher_detail">
+            <column name="teacher_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-28">
+        <addForeignKeyConstraint baseColumnNames="principal_id" baseTableName="principal_detail" constraintName="principal_detail_ibfk_1" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="principal" validate="true"/>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-29">
+        <addForeignKeyConstraint baseColumnNames="current_address_id" baseTableName="principal_detail" constraintName="principal_detail_ibfk_2" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="current_address" validate="true"/>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-30">
+        <addForeignKeyConstraint baseColumnNames="permenant_address_id" baseTableName="principal_detail" constraintName="principal_detail_ibfk_3" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="permenant_address" validate="true"/>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-31">
+        <addForeignKeyConstraint baseColumnNames="student_id" baseTableName="student_attendence" constraintName="student_attendence_ibfk_1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="student" validate="true"/>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-32">
+        <addForeignKeyConstraint baseColumnNames="attendence_id" baseTableName="student_attendence" constraintName="student_attendence_ibfk_2" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="attendence" validate="true"/>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-33">
+        <addForeignKeyConstraint baseColumnNames="student_id" baseTableName="student_detail" constraintName="student_detail_ibfk_1" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="student" validate="true"/>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-34">
+        <addForeignKeyConstraint baseColumnNames="current_address_id" baseTableName="student_detail" constraintName="student_detail_ibfk_2" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="current_address" validate="true"/>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-35">
+        <addForeignKeyConstraint baseColumnNames="permenant_address_id" baseTableName="student_detail" constraintName="student_detail_ibfk_3" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="permenant_address" validate="true"/>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-36">
+        <addForeignKeyConstraint baseColumnNames="teacher_id" baseTableName="student" constraintName="student_ibfk_1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="teacher" validate="true"/>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-37">
+        <addForeignKeyConstraint baseColumnNames="grade_id" baseTableName="student" constraintName="student_ibfk_2" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="grade" validate="true"/>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-38">
+        <addForeignKeyConstraint baseColumnNames="teacher_id" baseTableName="teacher_detail" constraintName="teacher_detail_ibfk_1" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="teacher" validate="true"/>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-39">
+        <addForeignKeyConstraint baseColumnNames="current_address_id" baseTableName="teacher_detail" constraintName="teacher_detail_ibfk_2" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="current_address" validate="true"/>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-40">
+        <addForeignKeyConstraint baseColumnNames="permenant_address_id" baseTableName="teacher_detail" constraintName="teacher_detail_ibfk_3" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="permenant_address" validate="true"/>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-41">
+        <addForeignKeyConstraint baseColumnNames="principal_id" baseTableName="teacher" constraintName="teacher_ibfk_1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="principal" validate="true"/>
+    </changeSet>
+    <changeSet author="umang (generated)" id="1597050389157-42">
+        <addForeignKeyConstraint baseColumnNames="grade_id" baseTableName="teacher" constraintName="teacher_ibfk_2" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="grade" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

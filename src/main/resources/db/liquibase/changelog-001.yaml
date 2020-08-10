@@ -1,0 +1,27 @@
+databaseChangeLog:
+- changeSet:  
+   id: dropColumn-signup_details
+   author: umang  
+   changes:  
+   - dropColumn: 
+      catalogName: school_management
+      columnName: role 
+      schemaName: school_management  
+      tableName: signin_details
+- changeSet:
+   id: insert-data-in-signup_details
+   author: umang
+   changes:
+   - insert:
+      tableName: signin_details
+      catalogName: school_management
+      columns:
+         - column:
+            name: email
+            value: "abc@gmail.com"
+         - column:
+            name: password
+            value: 12345
+   rollback:
+    - sql:
+       sql: delete from signup_details;
