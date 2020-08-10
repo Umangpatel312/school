@@ -41,9 +41,12 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
     testImplementation 'org.springframework.security:spring-security-test'
+<<<<<<< HEAD
     // https://mvnrepository.com/artifact/org.hibernate/hibernate-ehcache
 compile group: 'org.hibernate', name: 'hibernate-ehcache', version: '5.4.19.Final'
     
+=======
+>>>>>>> cc19e2619720998e90858fc01a0e78f37bf0cb3a
 }
 
 test {
@@ -66,10 +69,17 @@ liquibase {
     activities {
         main {
             driver "com.mysql.cj.jdbc.Driver"
+<<<<<<< HEAD
             url "jdbc:mysql://localhost:3306/school_management?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true"
             username "root"
             password "root"
             changeLogFile "src/main/resources/db/liquibase/db-master.yaml"
+=======
+            url "jdbc:mysql://localhost:3306/school_management"
+            username "root"
+            password ""
+            changeLogFile "src/main/resources/db/liquibase/master.yaml"
+>>>>>>> cc19e2619720998e90858fc01a0e78f37bf0cb3a
             logLevel "debug"
             classpath "src/main/resources/"
         }
