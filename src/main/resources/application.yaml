@@ -45,7 +45,3 @@ spring:
       
   liquibase:
     enabled: true
-security:
-   basic:
-      enable: false
-      ignored: /**

@@ -41,21 +41,20 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
     testImplementation 'org.springframework.security:spring-security-test'
-
     // https://mvnrepository.com/artifact/org.hibernate/hibernate-ehcache
-compile group: 'org.hibernate', name: 'hibernate-ehcache', version: '5.4.19.Final'
+	compile group: 'org.hibernate', name: 'hibernate-ehcache', version: '5.4.19.Final'
+    // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
+compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+
+    // https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api
+compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.0'
     
 }
 
 test {
     jvmArgs(['--enable-preview'])
     useJUnitPlatform()
-}            url "jdbc:mysql://localhost:3306/school_management"
-            username "root"
-            password ""
-            changeLogFile "src/main/resources/db/liquibase/master.yaml"
->>>>>>> cc19e2619720998e90858fc01a0e78f37bf0cb3a
-
+}
 
 
 tasks.withType(JavaCompile).each {
