@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="signin_details")
-public class SignUpDetail {
+public class SignInDetail {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -22,11 +22,11 @@ public class SignUpDetail {
 //	@Column(name="role")
 //	private String role;
 	
-	public SignUpDetail() {
+	public SignInDetail() {
 		
 	}
 	
-	public SignUpDetail(String email, String password, String role) {
+	public SignInDetail(String email, String password, String role) {
 	
 		this.email = email;
 		this.password = password;

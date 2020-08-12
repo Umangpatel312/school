@@ -15,7 +15,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.school.management.service.SignUpServiceImpl;
+import com.school.management.service.SignInServiceImpl;
 import com.school.management.util.JwtUtil;
 
 @Component
@@ -24,7 +24,7 @@ public class JwtFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUtil jwtUtil;
     @Autowired
-    private SignUpServiceImpl signUpServiceImpl;
+    private SignInServiceImpl signUpServiceImpl;
 
 
     @Override
@@ -34,7 +34,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String token = null;
         String userName = null;
-
+        System.out.println("filter is invoked");
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             token = authorizationHeader.substring(7);
             userName = jwtUtil.extractUsername(token);
