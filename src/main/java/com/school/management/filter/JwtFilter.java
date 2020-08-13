@@ -15,19 +15,25 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.school.management.service.SignInServiceImpl;
+import com.school.management.service.UserLoginService;
 import com.school.management.util.JwtUtil;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
-    @Autowired
     private JwtUtil jwtUtil;
+   
+    private UserLoginService userLoginService;
+ 
     @Autowired
-    private SignInServiceImpl signUpServiceImpl;
+    public JwtFilter(JwtUtil jwtUtil, UserLoginService userLoginService) {
+		super();
+		this.jwtUtil = jwtUtil;
+		this.userLoginService = userLoginService;
+	}
 
 
-    @Override
+	@Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
 
         String authorizationHeader = httpServletRequest.getHeader("Authorization");
@@ -42,7 +48,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            UserDetails userDetails = signUpServiceImpl.loadUserByUsername(userName);
+            UserDetails userDetails = userLoginService.loadUserByUsername(userName);
 
             if (jwtUtil.validateToken(token, userDetails)) {
 

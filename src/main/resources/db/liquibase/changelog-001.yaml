@@ -1,19 +1,10 @@
 databaseChangeLog:
-- changeSet:  
-   id: dropColumn-signup_details
-   author: umang  
-   changes:  
-   - dropColumn: 
-      catalogName: school_management
-      columnName: role 
-      schemaName: school_management  
-      tableName: signin_details
 - changeSet:
-   id: insert-data-in-signup_details
+   id: insert-data-in-user
    author: umang
    changes:
    - insert:
-      tableName: signin_details
+      tableName: user
       catalogName: school_management
       columns:
          - column:
@@ -22,25 +13,8 @@ databaseChangeLog:
          - column:
             name: password
             value: 12345
-   rollback:
-    - sql:
-       sql: delete from signup_details;
-- changeSet:  
-   id: alterColumn-signup_details
-   author: umang  
-   changes:  
-   - modifyDataType: 
-      catalogName: school_management
-      columnName: password 
-      newDataType: varchar(70)
-      schemaName: school_management  
-      tableName: signin_details
-- changeSet:
-   id: insert-bcrypt-data-in-signup_details
-   author: umang
-   changes:
    - insert:
-      tableName: signin_details
+      tableName: user
       catalogName: school_management
       columns:
          - column:
@@ -48,8 +22,15 @@ databaseChangeLog:
             value: "xyz@gmail.com"
          - column:
             name: password
-            value: "$2a$10$KhxIv2z5GrLKQG8jCe937ehpl5I8ddBntFZdH59CJMJiKqvYWVdDe"
-   rollback:
-    - sql:
-       sql: delete from signup_details;       
+            value: "121212"
+      rollback:
+       - sql:
+          sql: delete from user;
+      schemaName: school_management  
+      tableName: user
+
+   
+ 
+
+        
      

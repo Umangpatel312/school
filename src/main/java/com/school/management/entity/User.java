@@ -8,29 +8,32 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="signin_details")
-public class SignInDetail {
+@Table(name="user")
+public class User {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id")
+	private int id;
+	
 	@Column(name="email")
 	private String email;
 	
 	@Column(name="password")
 	private String password;
 	
-//	@Column(name="role")
-//	private String role;
+	@Column(name="role")
+	private String role;
 	
-	public SignInDetail() {
+	public User() {
 		
 	}
 	
-	public SignInDetail(String email, String password, String role) {
+	public User(String email, String password, String role) {
 	
 		this.email = email;
 		this.password = password;
-//		this.role = role;
+		this.role = role;
 	}
 
 	public String getEmail() {
@@ -54,13 +57,13 @@ public class SignInDetail {
 		return "SignUpDetail [email=" + email + ", password=" + password + "]";
 	}
 
-//	public String getRole() {
-//		return role;
-//	}
-//
-//	public void setRole(String role) {
-//		this.role = role;
-//	}
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
 
 	
 	

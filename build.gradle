@@ -41,13 +41,9 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
     testImplementation 'org.springframework.security:spring-security-test'
-    // https://mvnrepository.com/artifact/org.hibernate/hibernate-ehcache
-	compile group: 'org.hibernate', name: 'hibernate-ehcache', version: '5.4.19.Final'
-    // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
-compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+    compile group: 'org.hibernate', name: 'hibernate-ehcache', version: '5.4.19.Final'
+    compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 
-    // https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api
-compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.0'
     
 }
 
@@ -74,7 +70,7 @@ liquibase {
             url "jdbc:mysql://localhost:3306/school_management?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true"
             username "root"
             password "root"
-            changeLogFile "src/main/resources/db/liquibase/db-master.yaml"
+            changeLogFile "src/main/resources/db/liquibase/master.yaml"
             logLevel "debug"
             classpath "src/main/resources/"
         }
