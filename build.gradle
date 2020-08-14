@@ -43,7 +43,7 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
     compile group: 'org.hibernate', name: 'hibernate-ehcache', version: '5.4.19.Final'
     compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
-
+	
     
 }
 

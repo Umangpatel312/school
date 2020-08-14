@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.school.management.repository.UserRepository;
+import com.school.management.restController.UserNotFoundException;
 
 @Service
 public class UserLoginService implements UserDetailsService {
@@ -23,7 +23,7 @@ public class UserLoginService implements UserDetailsService {
 	}
 	
 	@Override
-	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String email) throws UserNotFoundException {
 		
 		System.out.println("loadUserByUsername is invoked");
 		
@@ -32,7 +32,7 @@ public class UserLoginService implements UserDetailsService {
 		System.out.println("database returned:"+tempUser);
 		
 		if (tempUser == null) {
-            throw new UsernameNotFoundException(email);
+            throw new UserNotFoundException("user not found");
         }
         
 		return new User(tempUser.getEmail(), tempUser.getPassword(), emptyList());
@@ -49,7 +49,7 @@ public class UserLoginService implements UserDetailsService {
 		com.school.management.entity.User tempUser=userRepository.findByEmail(email);
 		
 		if(tempUser==null) {
-			throw new Exception("Data Not Found");
+			throw new UserNotFoundException("user not found");
 		}
 		
 		tempUser.setEmail(theUser.getEmail());

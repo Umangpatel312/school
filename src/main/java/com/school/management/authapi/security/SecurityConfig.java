@@ -21,15 +21,16 @@ import com.school.management.service.UserLoginService;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	
-
-    @Autowired
     private UserLoginService userLoginService;
 
-    @Autowired
     private JwtFilter jwtFilter;
-
-    @Override
+ 
+    @Autowired
+    public SecurityConfig(UserLoginService userLoginService, JwtFilter jwtFilter) {
+		this.userLoginService = userLoginService;
+		this.jwtFilter = jwtFilter;
+	}
+	@Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userLoginService);
     }

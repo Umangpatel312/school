@@ -1,0 +1,36 @@
+databaseChangeLog:
+- changeSet:
+   id: insert-data-in-user
+   author: umang
+   changes:
+   - insert:
+      tableName: user
+      catalogName: school_management
+      columns:
+         - column:
+            name: email
+            value: "abc@gmail.com"
+         - column:
+            name: password
+            value: 12345
+   - insert:
+      tableName: user
+      catalogName: school_management
+      columns:
+         - column:
+            name: email
+            value: "xyz@gmail.com"
+         - column:
+            name: password
+            value: "121212"
+      rollback:
+       - sql:
+          sql: delete from user;
+      schemaName: school_management  
+      tableName: user
+
+   
+ 
+
+        
+     

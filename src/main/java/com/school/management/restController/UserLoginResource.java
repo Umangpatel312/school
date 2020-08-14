@@ -32,28 +32,27 @@ public class UserLoginResource {
 
 	@PostMapping(value = "/authenticate", consumes = MediaType.APPLICATION_JSON_VALUE
 			,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> authenticate(@RequestBody User signInDetail) throws Exception {
-        try {
+    public JwtResponse authenticate(@RequestBody User theUser) throws Exception {
+        System.out.println("===>resources is processed");
+		
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(signInDetail.getEmail(), signInDetail.getPassword())
+                    new UsernamePasswordAuthenticationToken(theUser.getEmail(), theUser.getPassword())
             );
-        } catch (Exception ex) {
-            throw new Exception("inavalid username/password");
-        }
-        final String jwttoken= jwtUtil.generateToken(signInDetail.getEmail());
-        return ResponseEntity.ok(new JwtResponse(jwttoken));
+
+        System.out.println(theUser.getEmail());
+        final String jwttoken= jwtUtil.generateToken(theUser.getEmail());
+        System.out.println(jwttoken);
+        System.out.println("end of the resources<====");
+        
+        return new JwtResponse(jwttoken);
 	}
 	
 	@PutMapping(value="/update/{email}", consumes = MediaType.APPLICATION_JSON_VALUE
 			,produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> updat(@PathVariable String email,@RequestBody User theUser) {
+	public ResponseEntity<User> updat(@PathVariable String email,@RequestBody User theUser) throws Exception {
 		User tempUser=null;
-		try {
-			tempUser=userLoginSevice.update(email,theUser);
-		}
-		catch (Exception e) {
-			System.out.println(e);
-		}
+		tempUser=userLoginSevice.update(email,theUser);
+		
 		return ResponseEntity.ok().body(tempUser); 
 	}
 	
