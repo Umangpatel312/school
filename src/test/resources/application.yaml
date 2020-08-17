@@ -45,3 +45,5 @@ spring:
       
   liquibase:
     enabled: true
+jwt:
+   token: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhYmNkQGdtYWlsLmNvbSIsImV4cCI6MTU5NzUwNjIyMSwiaWF0IjoxNTk3NDcwMjIxfQ.f6AYmo0upXVRAycjJvaC7Jbat1MMLWJinuopjnve84E

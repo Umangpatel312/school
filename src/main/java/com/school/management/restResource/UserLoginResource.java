@@ -1,7 +1,8 @@
-package com.school.management.restController;
+package com.school.management.restResource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,6 +22,8 @@ import com.school.management.util.JwtUtil;
 @RestController
 public class UserLoginResource {
 
+	Logger logger= LoggerFactory.getLogger(UserLoginResource.class);
+	
 	@Autowired
 	private JwtUtil jwtUtil;
 
@@ -33,23 +36,22 @@ public class UserLoginResource {
 	@PostMapping(value = "/authenticate", consumes = MediaType.APPLICATION_JSON_VALUE
 			,produces = MediaType.APPLICATION_JSON_VALUE)
     public JwtResponse authenticate(@RequestBody User theUser) throws Exception {
-        System.out.println("===>resources is processed");
+       logger.info("===>resources is processed");
 		
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(theUser.getEmail(), theUser.getPassword())
             );
 
-        System.out.println(theUser.getEmail());
         final String jwttoken= jwtUtil.generateToken(theUser.getEmail());
-        System.out.println(jwttoken);
-        System.out.println("end of the resources<====");
+        logger.debug(jwttoken);
+        logger.info("end of the resources<====");
         
         return new JwtResponse(jwttoken);
 	}
 	
 	@PutMapping(value="/update/{email}", consumes = MediaType.APPLICATION_JSON_VALUE
 			,produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> updat(@PathVariable String email,@RequestBody User theUser) throws Exception {
+	public ResponseEntity<User> update(@PathVariable String email,@RequestBody User theUser) throws Exception {
 		User tempUser=null;
 		tempUser=userLoginSevice.update(email,theUser);
 		
@@ -58,11 +60,9 @@ public class UserLoginResource {
 	
 	@PostMapping(value="/create", consumes = MediaType.APPLICATION_JSON_VALUE
 			,produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> createTeacher(@RequestBody User theUser) {
-		
-		userLoginSevice.save(theUser);
-		
-		return ResponseEntity.ok().body(theUser);
+	public ResponseEntity<User> create(@RequestBody User theUser) {
+
+		return ResponseEntity.ok().body(userLoginSevice.save(theUser));
 	}
 	
 	

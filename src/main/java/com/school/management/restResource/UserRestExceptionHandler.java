@@ -1,4 +1,4 @@
-package com.school.management.restController;
+package com.school.management.restResource;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

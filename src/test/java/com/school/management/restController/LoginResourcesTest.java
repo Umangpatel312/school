@@ -7,7 +7,6 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.hibernate.hql.internal.ast.tree.IsNotNullLogicOperatorNode;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +21,8 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.school.management.restResource.UserLoginResource;
+import com.school.management.restResource.UserNotFoundException;
 import com.school.management.service.UserLoginService;
 import com.school.management.util.JwtUtil;
 

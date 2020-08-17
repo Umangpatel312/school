@@ -1,4 +1,4 @@
-package com.school.management.restController;
+package com.school.management.restResource;
 
 public class UserErrorResponse {
 	private int status;

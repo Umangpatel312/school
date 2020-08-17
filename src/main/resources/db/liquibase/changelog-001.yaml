@@ -1,5 +1,42 @@
 databaseChangeLog:
 - changeSet:
+   id: drop signuptable
+   author: umang
+   preConditions:
+   - onFail: MARK_RAN 
+   - tableExists: 
+      schemaName: school_management
+      tableName: signin_details
+   changes: 
+   - droptable:
+      cascadeConstraints: true
+      catalogName: school_management
+      schemaName: school_mangement
+      tableName: signin_details
+   
+   - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+            name: id
+            type: INT
+        - column:
+            constraints:
+              unique: true
+            name: email
+            type: VARCHAR(45)
+        - column:
+            name: role
+            type: VARCHAR(45)
+        - column:
+            name: password
+            type: VARCHAR(70)
+        tableName: user
+   
+- changeSet:
    id: insert-data-in-user
    author: umang
    changes:
@@ -28,6 +65,7 @@ databaseChangeLog:
           sql: delete from user;
       schemaName: school_management  
       tableName: user
+
 
    
  

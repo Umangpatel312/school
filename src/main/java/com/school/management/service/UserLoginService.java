@@ -2,6 +2,8 @@ package com.school.management.service;
 
 import static java.util.Collections.emptyList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,11 +11,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import com.school.management.repository.UserRepository;
-import com.school.management.restController.UserNotFoundException;
+import com.school.management.restResource.UserNotFoundException;
 
 @Service
 public class UserLoginService implements UserDetailsService {
 
+	Logger logger= LoggerFactory.getLogger(UserLoginService.class);
 	
 	private UserRepository userRepository;
 	
@@ -25,14 +28,15 @@ public class UserLoginService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UserNotFoundException {
 		
-		System.out.println("loadUserByUsername is invoked");
+		logger.info("loadUserByUsername is invoked");
 		
 		com.school.management.entity.User tempUser=userRepository.findByEmail(email);
 		
-		System.out.println("database returned:"+tempUser);
+		logger.debug("database returned:"+tempUser);
 		
 		if (tempUser == null) {
-            throw new UserNotFoundException("user not found");
+           logger.warn("database returned user: "+tempUser);
+			throw new UserNotFoundException("Bad credentials");
         }
         
 		return new User(tempUser.getEmail(), tempUser.getPassword(), emptyList());
@@ -40,7 +44,7 @@ public class UserLoginService implements UserDetailsService {
 	
 	
 	public com.school.management.entity.User save(com.school.management.entity.User theUser) {
-		System.out.println("sevice: save is invoked");
+		logger.info("sevice: save is invoked");
 		return userRepository.save(theUser);
 	}
 	
@@ -49,7 +53,7 @@ public class UserLoginService implements UserDetailsService {
 		com.school.management.entity.User tempUser=userRepository.findByEmail(email);
 		
 		if(tempUser==null) {
-			throw new UserNotFoundException("user not found");
+			throw new UserNotFoundException("Bad credentials");
 		}
 		
 		tempUser.setEmail(theUser.getEmail());
