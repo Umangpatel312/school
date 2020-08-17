@@ -1,6 +1,7 @@
 spring:
   profiles:
-    active: dev
+    active: 
+    - test
     include:
       - swagger
       # Uncomment to activate TLS for the dev profile
@@ -16,9 +17,10 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://localhost:3306/school_management?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
-    username: root
-    password: root
+    driverClassName: org.h2.Driver
+    url: jdbc:h2:mem:test;;MODE=MySQL;IGNORECASE=TRUE;
+    username: sa
+    password: 
     hikari:
       poolName: Hikari
       auto-commit: false
@@ -28,8 +30,8 @@ spring:
         prepStmtCacheSqlLimit: 2048
         useServerPrepStmts: true
   jpa:
-    database-platform: org.hibernate.dialect.MySQL8Dialect
-    database: MYSQL
+    database-platform: org.hibernate.dialect.H2Dialect
+    database: H2
     show-sql: false
     properties:
       hibernate.format_sql: true
@@ -45,5 +47,3 @@ spring:
       
   liquibase:
     enabled: true
-jwt:
-   token: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhYmNkQGdtYWlsLmNvbSIsImV4cCI6MTU5NzUwNjIyMSwiaWF0IjoxNTk3NDcwMjIxfQ.f6AYmo0upXVRAycjJvaC7Jbat1MMLWJinuopjnve84E

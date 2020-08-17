@@ -28,11 +28,11 @@ public class UserLoginService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UserNotFoundException {
 		
-		logger.info("loadUserByUsername is invoked");
+		logger.info("loadUserByUsername is invoked: "+email);
 		
 		com.school.management.entity.User tempUser=userRepository.findByEmail(email);
 		
-		logger.debug("database returned:"+tempUser);
+		logger.info("database returned:"+tempUser);
 		
 		if (tempUser == null) {
            logger.warn("database returned user: "+tempUser);

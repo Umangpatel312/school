@@ -5,13 +5,11 @@ databaseChangeLog:
    preConditions:
    - onFail: MARK_RAN 
    - tableExists: 
-      schemaName: school_management
       tableName: signin_details
    changes: 
    - droptable:
       cascadeConstraints: true
       catalogName: school_management
-      schemaName: school_mangement
       tableName: signin_details
    
    - createTable:
@@ -63,9 +61,7 @@ databaseChangeLog:
       rollback:
        - sql:
           sql: delete from user;
-      schemaName: school_management  
       tableName: user
-
 
 
    

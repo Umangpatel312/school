@@ -1,7 +1,7 @@
 databaseChangeLog:
 - changeSet:
-    id: 1597225876556-1
-    author: umang (generated)
+    id: 1597046544363-1
+    author: tarang (generated)
     changes:
     - createTable:
         columns:
@@ -16,13 +16,10 @@ databaseChangeLog:
             defaultValueComputed: CURRENT_TIMESTAMP
             name: date
             type: timestamp
-        - column:
-            name: grade_id
-            type: INT
         tableName: attendence
 - changeSet:
-    id: 1597225876556-2
-    author: umang (generated)
+    id: 1597046544363-2
+    author: tarang (generated)
     changes:
     - createTable:
         columns:
@@ -50,8 +47,8 @@ databaseChangeLog:
             type: VARCHAR(45)
         tableName: current_address
 - changeSet:
-    id: 1597225876556-3
-    author: umang (generated)
+    id: 1597046544363-3
+    author: tarang (generated)
     changes:
     - createTable:
         columns:
@@ -70,8 +67,8 @@ databaseChangeLog:
             type: CHAR(1)
         tableName: grade
 - changeSet:
-    id: 1597225876556-4
-    author: umang (generated)
+    id: 1597046544363-4
+    author: tarang (generated)
     changes:
     - createTable:
         columns:
@@ -99,8 +96,8 @@ databaseChangeLog:
             type: VARCHAR(45)
         tableName: permenant_address
 - changeSet:
-    id: 1597225876556-5
-    author: umang (generated)
+    id: 1597046544363-5
+    author: tarang (generated)
     changes:
     - createTable:
         columns:
@@ -122,8 +119,8 @@ databaseChangeLog:
             type: VARCHAR(45)
         tableName: principal
 - changeSet:
-    id: 1597225876556-6
-    author: umang (generated)
+    id: 1597046544363-6
+    author: tarang (generated)
     changes:
     - createTable:
         columns:
@@ -157,8 +154,27 @@ databaseChangeLog:
             type: INT
         tableName: principal_detail
 - changeSet:
-    id: 1597225876556-7
-    author: umang (generated)
+    id: 1597046544363-7
+    author: tarang (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+            name: email
+            type: VARCHAR(45)
+        - column:
+            name: role
+            type: VARCHAR(45)
+        - column:
+            name: password
+            type: VARCHAR(45)
+        tableName: signin_details
+- changeSet:
+    id: 1597046544363-8
+    author: tarang (generated)
     changes:
     - createTable:
         columns:
@@ -189,8 +205,8 @@ databaseChangeLog:
             type: INT
         tableName: student
 - changeSet:
-    id: 1597225876556-8
-    author: umang (generated)
+    id: 1597046544363-9
+    author: tarang (generated)
     changes:
     - createTable:
         columns:
@@ -212,8 +228,8 @@ databaseChangeLog:
             type: CHAR(1)
         tableName: student_attendence
 - changeSet:
-    id: 1597225876556-9
-    author: umang (generated)
+    id: 1597046544363-10
+    author: tarang (generated)
     changes:
     - createTable:
         columns:
@@ -247,8 +263,8 @@ databaseChangeLog:
             type: INT
         tableName: student_detail
 - changeSet:
-    id: 1597225876556-10
-    author: umang (generated)
+    id: 1597046544363-11
+    author: tarang (generated)
     changes:
     - createTable:
         columns:
@@ -276,8 +292,8 @@ databaseChangeLog:
             type: INT
         tableName: teacher
 - changeSet:
-    id: 1597225876556-11
-    author: umang (generated)
+    id: 1597046544363-12
+    author: tarang (generated)
     changes:
     - createTable:
         columns:
@@ -311,208 +327,8 @@ databaseChangeLog:
             type: INT
         tableName: teacher_detail
 - changeSet:
-    id: 1597225876556-12
-    author: umang (generated)
-    changes:
-    - createTable:
-        columns:
-        - column:
-            autoIncrement: true
-            constraints:
-              nullable: false
-              primaryKey: true
-            name: id
-            type: INT
-        - column:
-            constraints:
-              unique: true
-            name: email
-            type: VARCHAR(45)
-        - column:
-            name: role
-            type: VARCHAR(45)
-        - column:
-            name: password
-            type: VARCHAR(70)
-        tableName: user
-- changeSet:
-    id: 1597225876556-13
-    author: umang (generated)
-    changes:
-    - createIndex:
-        columns:
-        - column:
-            name: attendence_id
-        indexName: attendence_id
-        tableName: student_attendence
-- changeSet:
-    id: 1597225876556-14
-    author: umang (generated)
-    changes:
-    - createIndex:
-        columns:
-        - column:
-            name: current_address_id
-        indexName: current_address_id
-        tableName: principal_detail
-- changeSet:
-    id: 1597225876556-15
-    author: umang (generated)
-    changes:
-    - createIndex:
-        columns:
-        - column:
-            name: current_address_id
-        indexName: current_address_id
-        tableName: student_detail
-- changeSet:
-    id: 1597225876556-16
-    author: umang (generated)
-    changes:
-    - createIndex:
-        columns:
-        - column:
-            name: current_address_id
-        indexName: current_address_id
-        tableName: teacher_detail
-- changeSet:
-    id: 1597225876556-17
-    author: umang (generated)
-    changes:
-    - createIndex:
-        columns:
-        - column:
-            name: grade_id
-        indexName: grade_id
-        tableName: attendence
-- changeSet:
-    id: 1597225876556-18
-    author: umang (generated)
-    changes:
-    - createIndex:
-        columns:
-        - column:
-            name: grade_id
-        indexName: grade_id
-        tableName: student
-- changeSet:
-    id: 1597225876556-19
-    author: umang (generated)
-    changes:
-    - createIndex:
-        columns:
-        - column:
-            name: grade_id
-        indexName: grade_id
-        tableName: teacher
-- changeSet:
-    id: 1597225876556-20
-    author: umang (generated)
-    changes:
-    - createIndex:
-        columns:
-        - column:
-            name: permenant_address_id
-        indexName: permenant_address_id
-        tableName: principal_detail
-- changeSet:
-    id: 1597225876556-21
-    author: umang (generated)
-    changes:
-    - createIndex:
-        columns:
-        - column:
-            name: permenant_address_id
-        indexName: permenant_address_id
-        tableName: student_detail
-- changeSet:
-    id: 1597225876556-22
-    author: umang (generated)
-    changes:
-    - createIndex:
-        columns:
-        - column:
-            name: permenant_address_id
-        indexName: permenant_address_id
-        tableName: teacher_detail
-- changeSet:
-    id: 1597225876556-23
-    author: umang (generated)
-    changes:
-    - createIndex:
-        columns:
-        - column:
-            name: principal_id
-        indexName: principal_id
-        tableName: principal_detail
-- changeSet:
-    id: 1597225876556-24
-    author: umang (generated)
-    changes:
-    - createIndex:
-        columns:
-        - column:
-            name: principal_id
-        indexName: principal_id
-        tableName: teacher
-- changeSet:
-    id: 1597225876556-25
-    author: umang (generated)
-    changes:
-    - createIndex:
-        columns:
-        - column:
-            name: student_id
-        indexName: student_id
-        tableName: student_attendence
-- changeSet:
-    id: 1597225876556-26
-    author: umang (generated)
-    changes:
-    - createIndex:
-        columns:
-        - column:
-            name: student_id
-        indexName: student_id
-        tableName: student_detail
-- changeSet:
-    id: 1597225876556-27
-    author: umang (generated)
-    changes:
-    - createIndex:
-        columns:
-        - column:
-            name: teacher_id
-        indexName: teacher_id
-        tableName: student
-- changeSet:
-    id: 1597225876556-28
-    author: umang (generated)
-    changes:
-    - createIndex:
-        columns:
-        - column:
-            name: teacher_id
-        indexName: teacher_id
-        tableName: teacher_detail
-- changeSet:
-    id: 1597225876556-29
-    author: umang (generated)
-    changes:
-    - addForeignKeyConstraint:
-        baseColumnNames: grade_id
-        baseTableName: attendence
-        constraintName: attendence_ibfk_1
-        deferrable: false
-        initiallyDeferred: false
-        onDelete: RESTRICT
-        onUpdate: RESTRICT
-        referencedColumnNames: id
-        referencedTableName: grade
-        validate: true
-- changeSet:
-    id: 1597225876556-30
-    author: umang (generated)
+    id: 1597046544363-28
+    author: tarang (generated)
     changes:
     - addForeignKeyConstraint:
         baseColumnNames: principal_id
@@ -526,8 +342,8 @@ databaseChangeLog:
         referencedTableName: principal
         validate: true
 - changeSet:
-    id: 1597225876556-31
-    author: umang (generated)
+    id: 1597046544363-29
+    author: tarang (generated)
     changes:
     - addForeignKeyConstraint:
         baseColumnNames: current_address_id
@@ -541,8 +357,8 @@ databaseChangeLog:
         referencedTableName: current_address
         validate: true
 - changeSet:
-    id: 1597225876556-32
-    author: umang (generated)
+    id: 1597046544363-30
+    author: tarang (generated)
     changes:
     - addForeignKeyConstraint:
         baseColumnNames: permenant_address_id
@@ -556,8 +372,8 @@ databaseChangeLog:
         referencedTableName: permenant_address
         validate: true
 - changeSet:
-    id: 1597225876556-33
-    author: umang (generated)
+    id: 1597046544363-31
+    author: tarang (generated)
     changes:
     - addForeignKeyConstraint:
         baseColumnNames: student_id
@@ -571,8 +387,8 @@ databaseChangeLog:
         referencedTableName: student
         validate: true
 - changeSet:
-    id: 1597225876556-34
-    author: umang (generated)
+    id: 1597046544363-32
+    author: tarang (generated)
     changes:
     - addForeignKeyConstraint:
         baseColumnNames: attendence_id
@@ -586,8 +402,8 @@ databaseChangeLog:
         referencedTableName: attendence
         validate: true
 - changeSet:
-    id: 1597225876556-35
-    author: umang (generated)
+    id: 1597046544363-33
+    author: tarang (generated)
     changes:
     - addForeignKeyConstraint:
         baseColumnNames: student_id
@@ -601,8 +417,8 @@ databaseChangeLog:
         referencedTableName: student
         validate: true
 - changeSet:
-    id: 1597225876556-36
-    author: umang (generated)
+    id: 1597046544363-34
+    author: tarang (generated)
     changes:
     - addForeignKeyConstraint:
         baseColumnNames: current_address_id
@@ -616,8 +432,8 @@ databaseChangeLog:
         referencedTableName: current_address
         validate: true
 - changeSet:
-    id: 1597225876556-37
-    author: umang (generated)
+    id: 1597046544363-35
+    author: tarang (generated)
     changes:
     - addForeignKeyConstraint:
         baseColumnNames: permenant_address_id
@@ -631,8 +447,8 @@ databaseChangeLog:
         referencedTableName: permenant_address
         validate: true
 - changeSet:
-    id: 1597225876556-38
-    author: umang (generated)
+    id: 1597046544363-36
+    author: tarang (generated)
     changes:
     - addForeignKeyConstraint:
         baseColumnNames: teacher_id
@@ -646,8 +462,8 @@ databaseChangeLog:
         referencedTableName: teacher
         validate: true
 - changeSet:
-    id: 1597225876556-39
-    author: umang (generated)
+    id: 1597046544363-37
+    author: tarang (generated)
     changes:
     - addForeignKeyConstraint:
         baseColumnNames: grade_id
@@ -661,8 +477,8 @@ databaseChangeLog:
         referencedTableName: grade
         validate: true
 - changeSet:
-    id: 1597225876556-40
-    author: umang (generated)
+    id: 1597046544363-38
+    author: tarang (generated)
     changes:
     - addForeignKeyConstraint:
         baseColumnNames: teacher_id
@@ -676,8 +492,8 @@ databaseChangeLog:
         referencedTableName: teacher
         validate: true
 - changeSet:
-    id: 1597225876556-41
-    author: umang (generated)
+    id: 1597046544363-39
+    author: tarang (generated)
     changes:
     - addForeignKeyConstraint:
         baseColumnNames: current_address_id
@@ -691,8 +507,8 @@ databaseChangeLog:
         referencedTableName: current_address
         validate: true
 - changeSet:
-    id: 1597225876556-42
-    author: umang (generated)
+    id: 1597046544363-40
+    author: tarang (generated)
     changes:
     - addForeignKeyConstraint:
         baseColumnNames: permenant_address_id
@@ -706,8 +522,8 @@ databaseChangeLog:
         referencedTableName: permenant_address
         validate: true
 - changeSet:
-    id: 1597225876556-43
-    author: umang (generated)
+    id: 1597046544363-41
+    author: tarang (generated)
     changes:
     - addForeignKeyConstraint:
         baseColumnNames: principal_id
@@ -721,8 +537,8 @@ databaseChangeLog:
         referencedTableName: principal
         validate: true
 - changeSet:
-    id: 1597225876556-44
-    author: umang (generated)
+    id: 1597046544363-42
+    author: tarang (generated)
     changes:
     - addForeignKeyConstraint:
         baseColumnNames: grade_id
@@ -735,7 +551,6 @@ databaseChangeLog:
         referencedColumnNames: id
         referencedTableName: grade
         validate: true
-databaseChangeLog:
-   - include:
-      file: "changelog-001.yaml"
+- include:
+      file: "changelog-001-test.yaml"
       relativeToChangelogFile: "true"

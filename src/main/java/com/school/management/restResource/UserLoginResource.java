@@ -43,7 +43,7 @@ public class UserLoginResource {
             );
 
         final String jwttoken= jwtUtil.generateToken(theUser.getEmail());
-        logger.debug(jwttoken);
+        logger.info(jwttoken);
         logger.info("end of the resources<====");
         
         return new JwtResponse(jwttoken);
