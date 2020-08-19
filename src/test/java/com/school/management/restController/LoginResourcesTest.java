@@ -1,35 +1,30 @@
 package com.school.management.restController;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.school.management.SchoolManagementApplication;
+import com.school.management.restResource.UserNotFoundException;
+import com.school.management.service.UserLoginService;
+import com.school.management.util.JwtUtil;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
 import static java.util.Collections.emptyList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.school.management.restResource.UserLoginResource;
-import com.school.management.restResource.UserNotFoundException;
-import com.school.management.service.UserLoginService;
-import com.school.management.util.JwtUtil;
-
-
-@WebMvcTest(controllers = UserLoginResource.class)
-@AutoConfigureMockMvc
-@ActiveProfiles("test")
+@SpringBootTest(classes = SchoolManagementApplication.class)
 public class LoginResourcesTest {
 
 	@Autowired

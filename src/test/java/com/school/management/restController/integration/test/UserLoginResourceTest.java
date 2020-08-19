@@ -5,12 +5,16 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.school.management.SchoolManagementApplication;
+import com.school.management.restResource.UserLoginResource;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -19,142 +23,154 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.school.management.entity.User;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
-@AutoConfigureMockMvc
+@SpringBootTest(classes = SchoolManagementApplication.class)
 public class UserLoginResourceTest {
 
-	@Autowired
-	private MockMvc mockMvc;
+  private MockMvc mockMvc;
 
-	@Autowired
-	private ObjectMapper mapper;
-		
-	@Test
-	void authenticateWorksThroughAllLayor() throws Exception {
-		String email = "abc@gmail.com";
-		String password = "12345";
-		User tempUser = new User(email, password, null);
+  @Autowired
+  private ObjectMapper mapper;
 
-		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/authenticate")
-				.contentType(MediaType.APPLICATION_JSON_VALUE).accept(MediaType.APPLICATION_JSON)
-				.characterEncoding("UTF-8").content(this.mapper.writeValueAsBytes(tempUser));
+  @Autowired
+  private UserLoginResource userLoginResource;
 
-		mockMvc.perform(builder).andExpect(status().isOk())
-				.andExpect(jsonPath("$.token").value(notNullValue(String.class)));
-	}
+  @Autowired
+  private HttpMessageConverter<?>[] httpMessageConverters;
 
-	@Test
-	void authenticateFailInvalidPassowrdWorksThroughAllLayor() throws Exception {
-		final String email = "abc@gmail.com";
-		final String password = "123456";
-		final String msg = "Bad credentials";
-		User tempUser = new User(email, password, null);
+  @BeforeEach
+  public void setup() {
 
-		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/authenticate")
-				.contentType(MediaType.APPLICATION_JSON_VALUE).accept(MediaType.APPLICATION_JSON)
-				.characterEncoding("UTF-8").content(this.mapper.writeValueAsBytes(tempUser));
+    this.mockMvc = MockMvcBuilders.standaloneSetup(userLoginResource)
+        .setMessageConverters(httpMessageConverters)
+        .build();
+  }
 
-		mockMvc.perform(builder).andExpect(status().isBadRequest()).andExpect(jsonPath("$.status", is(400)))
-				.andExpect(jsonPath("$.message", is(msg)))
-				.andExpect(jsonPath("$.timeStamp").value(notNullValue(Long.class)));
-	}
+  @Test
+  void authenticateWorksThroughAllLayor() throws Exception {
+    String email = "abc@gmail.com";
+    String password = "12345";
+    User tempUser = new User(email, password, null);
 
-	@Test
-	void authenticateFailUserNotFoundWorksThroughAllLayor() throws Exception {
-		final String email = "abcde@gmail.com";
-		final String password = "12345";
-		final String msg = "Bad credentials";
-		User tempUser = new User(email, password, null);
+    MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/authenticate")
+        .contentType(MediaType.APPLICATION_JSON_VALUE).accept(MediaType.APPLICATION_JSON)
+        .characterEncoding("UTF-8").content(this.mapper.writeValueAsBytes(tempUser));
 
-		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/authenticate")
-				.contentType(MediaType.APPLICATION_JSON_VALUE).accept(MediaType.APPLICATION_JSON)
-				.characterEncoding("UTF-8").content(this.mapper.writeValueAsBytes(tempUser));
+    mockMvc.perform(builder).andExpect(status().isOk())
+        .andExpect(jsonPath("$.token").value(notNullValue(String.class)));
+  }
 
-		mockMvc.perform(builder).andExpect(status().isBadRequest()).andExpect(jsonPath("$.status", is(400)))
-				.andExpect(jsonPath("$.message", is(msg)))
-				.andExpect(jsonPath("$.timeStamp").value(notNullValue(Long.class)));
-	}
+  @Test
+  void authenticateFailInvalidPassowrdWorksThroughAllLayor() throws Exception {
+    final String email = "abc@gmail.com";
+    final String password = "123456";
+    final String msg = "Bad credentials";
+    User tempUser = new User(email, password, null);
 
-	@Test
-	void update_authenticateRequired() throws Exception {
-		final String email = "abc@gmail.com";
-		final String password = "12345";
-		final String token = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhYmNAZ21haWwuY29tIiwiZXhwIjoxNTk3NzE5NDQ4LCJpYXQiOjE1OTc2ODM0NDh9.AQIuKE-z6jAYfon_dfsNvEaPyIOQVyHgsAFunEJn4Zc";
-		User tempUser = new User(email, password, null);
+    MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/authenticate")
+        .contentType(MediaType.APPLICATION_JSON_VALUE).accept(MediaType.APPLICATION_JSON)
+        .characterEncoding("UTF-8").content(this.mapper.writeValueAsBytes(tempUser));
 
-		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.put("/update/abc@gmail.com")
-				.contentType(MediaType.APPLICATION_JSON_VALUE).accept(MediaType.APPLICATION_JSON)
-				.characterEncoding("UTF-8").header("Authorization", token)
-				.content(this.mapper.writeValueAsBytes(tempUser));
+    mockMvc.perform(builder).andExpect(status().isBadRequest()).andExpect(jsonPath("$.status", is(400)))
+        .andExpect(jsonPath("$.message", is(msg)))
+        .andExpect(jsonPath("$.timeStamp").value(notNullValue(Long.class)));
+  }
 
-		mockMvc.perform(builder).andExpect(status().isOk());
-	}
+  @Test
+  void authenticateFailUserNotFoundWorksThroughAllLayor() throws Exception {
+    final String email = "abcde@gmail.com";
+    final String password = "12345";
+    final String msg = "Bad credentials";
+    User tempUser = new User(email, password, null);
 
-	@Test
-	void update_ThrowsuserNotFound_authenticateRequired() throws Exception {
-		final String email = "abc@gmail.com";
-		final String password = "12345";
-		final String token = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhYmNAZ21haWwuY29tIiwiZXhwIjoxNTk3NzE5NDQ4LCJpYXQiOjE1OTc2ODM0NDh9.AQIuKE-z6jAYfon_dfsNvEaPyIOQVyHgsAFunEJn4Zc";
-		final String msg = "Bad credentials";
-		User tempUser = new User(email, password, null);
+    MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/authenticate")
+        .contentType(MediaType.APPLICATION_JSON_VALUE).accept(MediaType.APPLICATION_JSON)
+        .characterEncoding("UTF-8").content(this.mapper.writeValueAsBytes(tempUser));
 
-		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.put("/update/abcd@gmail.com")
-				.contentType(MediaType.APPLICATION_JSON_VALUE).accept(MediaType.APPLICATION_JSON)
-				.characterEncoding("UTF-8").header("Authorization", token)
-				.content(this.mapper.writeValueAsBytes(tempUser));
+    mockMvc.perform(builder).andExpect(status().isBadRequest()).andExpect(jsonPath("$.status", is(400)))
+        .andExpect(jsonPath("$.message", is(msg)))
+        .andExpect(jsonPath("$.timeStamp").value(notNullValue(Long.class)));
+  }
 
-		mockMvc.perform(builder).andExpect(status().isNotFound())
-				.andExpect(jsonPath("$.status", is(404)))
-				.andExpect(jsonPath("$.message", is(msg)))
-				.andExpect(jsonPath("$.timeStamp").value(notNullValue(Long.class)));
-	}
+  @Test
+  void update_authenticateRequired() throws Exception {
+    final String email = "abc@gmail.com";
+    final String password = "12345";
+    final String token = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhYmNAZ21haWwuY29tIiwiZXhwIjoxNTk3NzE5NDQ4LCJpYXQiOjE1OTc2ODM0NDh9.AQIuKE-z6jAYfon_dfsNvEaPyIOQVyHgsAFunEJn4Zc";
+    User tempUser = new User(email, password, null);
 
-	@Test
-	void update_unauthorized_authenticateRequired() throws Exception {
-		final String email = "abc@gmail.com";
-		final String password = "12345";
-		User tempUser = new User(email, password, null);
+    MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.put("/update/abc@gmail.com")
+        .contentType(MediaType.APPLICATION_JSON_VALUE).accept(MediaType.APPLICATION_JSON)
+        .characterEncoding("UTF-8").header("Authorization", token)
+        .content(this.mapper.writeValueAsBytes(tempUser));
 
-		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.put("/update/abc@gmail.com")
-				.contentType(MediaType.APPLICATION_JSON_VALUE).accept(MediaType.APPLICATION_JSON)
-				.characterEncoding("UTF-8")
-				.content(this.mapper.writeValueAsBytes(tempUser));
+    mockMvc.perform(builder).andExpect(status().isOk());
+  }
 
-		mockMvc.perform(builder).andExpect(status().isForbidden());
-	}
+  @Test
+  void update_ThrowsuserNotFound_authenticateRequired() throws Exception {
+    final String email = "abc@gmail.com";
+    final String password = "12345";
+    final String token = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhYmNAZ21haWwuY29tIiwiZXhwIjoxNTk3NzE5NDQ4LCJpYXQiOjE1OTc2ODM0NDh9.AQIuKE-z6jAYfon_dfsNvEaPyIOQVyHgsAFunEJn4Zc";
+    final String msg = "Bad credentials";
+    User tempUser = new User(email, password, null);
 
-	@Test
-	void create_unauthorized_authenticateRequired() throws Exception {
-		final String email = "umang@gmail.com";
-		final String password = "12345";
-		User tempUser = new User(email, password, null);
+    MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.put("/update/abcd@gmail.com")
+        .contentType(MediaType.APPLICATION_JSON_VALUE).accept(MediaType.APPLICATION_JSON)
+        .characterEncoding("UTF-8").header("Authorization", token)
+        .content(this.mapper.writeValueAsBytes(tempUser));
 
-		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.put("/create")
-				.contentType(MediaType.APPLICATION_JSON_VALUE).accept(MediaType.APPLICATION_JSON)
-				.characterEncoding("UTF-8")
-				.content(this.mapper.writeValueAsBytes(tempUser));
+    mockMvc.perform(builder).andExpect(status().isNotFound())
+        .andExpect(jsonPath("$.status", is(404)))
+        .andExpect(jsonPath("$.message", is(msg)))
+        .andExpect(jsonPath("$.timeStamp").value(notNullValue(Long.class)));
+  }
 
-		mockMvc.perform(builder).andExpect(status().isForbidden());
-	}
-	
-	@Test
-	void create_successfullyAdded_authenticateRequired() throws Exception {
-		final String email = "umang@gmail.com";
-		final String password = "12345";
-		final String token = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhYmNAZ21haWwuY29tIiwiZXhwIjoxNTk3NzE5NDQ4LCJpYXQiOjE1OTc2ODM0NDh9.AQIuKE-z6jAYfon_dfsNvEaPyIOQVyHgsAFunEJn4Zc";
-		User tempUser = new User(email, password, null);
+  @Test
+  void update_unauthorized_authenticateRequired() throws Exception {
+    final String email = "abc@gmail.com";
+    final String password = "12345";
+    User tempUser = new User(email, password, null);
 
-		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/create")
-				.contentType(MediaType.APPLICATION_JSON_VALUE).accept(MediaType.APPLICATION_JSON)
-				.characterEncoding("UTF-8")
-				.characterEncoding("UTF-8").header("Authorization", token)
-				.content(this.mapper.writeValueAsBytes(tempUser));
+    MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.put("/update/abc@gmail.com")
+        .contentType(MediaType.APPLICATION_JSON_VALUE).accept(MediaType.APPLICATION_JSON)
+        .characterEncoding("UTF-8")
+        .content(this.mapper.writeValueAsBytes(tempUser));
 
-		mockMvc.perform(builder).andExpect(status().isOk())
-		.andExpect(jsonPath("$.email", is(email)))
-		.andExpect(jsonPath("$.password",is(password)));
-	}
-	
+    mockMvc.perform(builder).andExpect(status().isForbidden());
+  }
+
+  @Test
+  void create_unauthorized_authenticateRequired() throws Exception {
+    final String email = "umang@gmail.com";
+    final String password = "12345";
+    User tempUser = new User(email, password, null);
+
+    MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.put("/create")
+        .contentType(MediaType.APPLICATION_JSON_VALUE).accept(MediaType.APPLICATION_JSON)
+        .characterEncoding("UTF-8")
+        .content(this.mapper.writeValueAsBytes(tempUser));
+
+    mockMvc.perform(builder).andExpect(status().isForbidden());
+  }
+
+  @Test
+  void create_successfullyAdded_authenticateRequired() throws Exception {
+    final String email = "umang@gmail.com";
+    final String password = "12345";
+    final String token = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhYmNAZ21haWwuY29tIiwiZXhwIjoxNTk3NzE5NDQ4LCJpYXQiOjE1OTc2ODM0NDh9.AQIuKE-z6jAYfon_dfsNvEaPyIOQVyHgsAFunEJn4Zc";
+    User tempUser = new User(email, password, null);
+
+    MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/create")
+        .contentType(MediaType.APPLICATION_JSON_VALUE).accept(MediaType.APPLICATION_JSON)
+        .characterEncoding("UTF-8")
+        .characterEncoding("UTF-8").header("Authorization", token)
+        .content(this.mapper.writeValueAsBytes(tempUser));
+
+    mockMvc.perform(builder).andExpect(status().isOk())
+        .andExpect(jsonPath("$.email", is(email)))
+        .andExpect(jsonPath("$.password", is(password)));
+  }
+
 }
