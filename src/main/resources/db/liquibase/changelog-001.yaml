@@ -5,13 +5,10 @@ databaseChangeLog:
    preConditions:
    - onFail: MARK_RAN 
    - tableExists: 
-      schemaName: school_management
       tableName: signin_details
    changes: 
    - droptable:
       cascadeConstraints: true
-      catalogName: school_management
-      schemaName: school_mangement
       tableName: signin_details
    
    - createTable:
@@ -42,7 +39,6 @@ databaseChangeLog:
    changes:
    - insert:
       tableName: user
-      catalogName: school_management
       columns:
          - column:
             name: email
@@ -52,7 +48,6 @@ databaseChangeLog:
             value: 12345
    - insert:
       tableName: user
-      catalogName: school_management
       columns:
          - column:
             name: email
@@ -63,7 +58,6 @@ databaseChangeLog:
       rollback:
        - sql:
           sql: delete from user;
-      schemaName: school_management  
       tableName: user
 
 
