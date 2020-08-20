@@ -49,9 +49,9 @@ public class UserLoginService implements UserDetailsService {
 	}
 	
 	public com.school.management.entity.User update(String email,com.school.management.entity.User theUser) throws Exception{
-		
+		 logger.info("===> update in service is processed:"+email);
 		com.school.management.entity.User tempUser=userRepository.findByEmail(email);
-		
+		 logger.info("===>database return: "+tempUser);
 		if(tempUser==null) {
 			throw new UserNotFoundException("Bad credentials");
 		}

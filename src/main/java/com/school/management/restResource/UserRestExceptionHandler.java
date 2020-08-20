@@ -1,5 +1,7 @@
 package com.school.management.restResource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -7,7 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class UserRestExceptionHandler {
-
+	Logger logger=LoggerFactory.getLogger(UserRestExceptionHandler.class);
 	@ExceptionHandler
 	public ResponseEntity<UserErrorResponse> handleException(UserNotFoundException exc) {
 		
@@ -26,7 +28,7 @@ public class UserRestExceptionHandler {
 	
 	@ExceptionHandler
 	public ResponseEntity<UserErrorResponse> handleException(Exception exc) {
-		
+		logger.info("====> catch exception by controller advice:"+exc);
 		// create a UserErrorResponse
 		UserErrorResponse error = new UserErrorResponse();
 		

@@ -1,5 +1,7 @@
 package com.school.management.restResource;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,20 +51,21 @@ public class UserLoginResource {
         return new JwtResponse(jwttoken);
 	}
 	
-	@PutMapping(value="/update/{email}", consumes = MediaType.APPLICATION_JSON_VALUE
+	@PutMapping(value="/update/{email:.+}", consumes = MediaType.APPLICATION_JSON_VALUE
 			,produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> update(@PathVariable String email,@RequestBody User theUser) throws Exception {
+	public ResponseEntity<User> update(@PathVariable String email,@RequestBody User theUser,HttpServletResponse response) throws Exception {
+		 logger.info("===>update method is processed:"+email);
 		User tempUser=null;
 		tempUser=userLoginSevice.update(email,theUser);
-		
-		return ResponseEntity.ok().body(tempUser); 
+		 logger.info("===>ended update method: "+tempUser);
+		 return ResponseEntity.ok(tempUser); 
 	}
 	
 	@PostMapping(value="/create", consumes = MediaType.APPLICATION_JSON_VALUE
-			,produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> create(@RequestBody User theUser) {
+			,produces = "application/json")
+	public ResponseEntity<User> create(@RequestBody User theUser) throws Exception{
 
-		return ResponseEntity.ok().body(userLoginSevice.save(theUser));
+		return ResponseEntity.ok(userLoginSevice.save(theUser));
 	}
 	
 	
