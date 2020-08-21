@@ -1,7 +1,5 @@
 package com.school.management.restResource;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +14,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.school.management.dto.UserDTO;
 import com.school.management.entity.JwtResponse;
-import com.school.management.entity.User;
 import com.school.management.service.UserLoginService;
 import com.school.management.util.JwtUtil;
 
@@ -34,17 +32,18 @@ public class UserLoginResource {
 	
 	@Autowired
 	private UserLoginService userLoginSevice;
-
+	
+	
 	@PostMapping(value = "/authenticate", consumes = MediaType.APPLICATION_JSON_VALUE
 			,produces = MediaType.APPLICATION_JSON_VALUE)
-    public JwtResponse authenticate(@RequestBody User theUser) throws Exception {
+    public JwtResponse authenticate(@RequestBody UserDTO theUserDTO) throws Exception {
        logger.info("===>resources is processed");
 		
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(theUser.getEmail(), theUser.getPassword())
+                    new UsernamePasswordAuthenticationToken(theUserDTO.getEmail(),theUserDTO.getPassword())
             );
 
-        final String jwttoken= jwtUtil.generateToken(theUser.getEmail());
+        final String jwttoken= jwtUtil.generateToken(theUserDTO.getEmail());
         logger.info(jwttoken);
         logger.info("end of the resources<====");
         
@@ -53,21 +52,20 @@ public class UserLoginResource {
 	
 	@PutMapping(value="/update/{email:.+}", consumes = MediaType.APPLICATION_JSON_VALUE
 			,produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> update(@PathVariable String email,@RequestBody User theUser,HttpServletResponse response) throws Exception {
+	public ResponseEntity<UserDTO> update(@PathVariable String email,@RequestBody UserDTO theUserDTO) throws Exception {
 		 logger.info("===>update method is processed:"+email);
-		User tempUser=null;
-		tempUser=userLoginSevice.update(email,theUser);
-		 logger.info("===>ended update method: "+tempUser);
-		 return ResponseEntity.ok(tempUser); 
+		UserDTO tempUserDTO=null;
+		tempUserDTO=userLoginSevice.update(email,theUserDTO);
+		 logger.info("===>ended update method: "+tempUserDTO);
+		 return ResponseEntity.ok(tempUserDTO); 
 	}
 	
 	@PostMapping(value="/create", consumes = MediaType.APPLICATION_JSON_VALUE
 			,produces = "application/json")
-	public ResponseEntity<User> create(@RequestBody User theUser) throws Exception{
+	public ResponseEntity<UserDTO> create(@RequestBody UserDTO theUserDTO) throws Exception{
 
-		return ResponseEntity.ok(userLoginSevice.save(theUser));
+		return ResponseEntity.ok(userLoginSevice.save(theUserDTO));
 	}
-	
 	
 	
 	@GetMapping("/")

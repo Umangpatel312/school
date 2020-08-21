@@ -45,3 +45,4 @@ spring:
       
   liquibase:
     enabled: true
+jwt.token.secret: mySecretKey

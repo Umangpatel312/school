@@ -30,11 +30,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		this.userLoginService = userLoginService;
 		this.jwtFilter = jwtFilter;
 	}
-	@Override
+	
+    @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userLoginService);
     }
-    @Bean
+    
+	@Bean
     public PasswordEncoder passwordEncoder(){
         return NoOpPasswordEncoder.getInstance();
     }
