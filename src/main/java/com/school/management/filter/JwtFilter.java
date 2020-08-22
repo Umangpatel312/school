@@ -1,12 +1,10 @@
 package com.school.management.filter;
 
 import java.io.IOException;
-
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,54 +14,55 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import com.school.management.service.UserLoginService;
 import com.school.management.util.JwtUtil;
 
 @Service
 public class JwtFilter extends OncePerRequestFilter {
-	
-	Logger logger =LoggerFactory.getLogger(JwtFilter.class);
-	
-	private JwtUtil jwtUtil;
 
-	private UserLoginService userLoginService;
+  Logger logger = LoggerFactory.getLogger(JwtFilter.class);
 
-	
-	@Autowired
-	public JwtFilter(JwtUtil jwtUtil, UserLoginService userLoginService) {
-		this.jwtUtil = jwtUtil;
-		this.userLoginService = userLoginService;
-	}
+  private JwtUtil jwtUtil;
 
-	@Override
-	protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
-			FilterChain filterChain) throws ServletException, IOException {
+  private UserLoginService userLoginService;
 
-		String authorizationHeader = httpServletRequest.getHeader("Authorization");
 
-		String token = null;
-		String userName = null;
-		logger.info("filter is invoked");
-		if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-			token = authorizationHeader.substring(7);
-			userName = jwtUtil.extractUsername(token);
-		}
+  @Autowired
+  public JwtFilter(JwtUtil jwtUtil, UserLoginService userLoginService) {
+    this.jwtUtil = jwtUtil;
+    this.userLoginService = userLoginService;
+  }
 
-		if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-			UserDetails userDetails=null;
-			
-				userDetails = userLoginService.loadUserByUsername(userName);
-			
-			if (jwtUtil.validateToken(token, userDetails)) {
+  @Override
+  protected void doFilterInternal(HttpServletRequest httpServletRequest,
+      HttpServletResponse httpServletResponse, FilterChain filterChain)
+      throws ServletException, IOException {
 
-				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-						userDetails, null, userDetails.getAuthorities());
-				usernamePasswordAuthenticationToken
-						.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
-				SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-			}
-		}
-		filterChain.doFilter(httpServletRequest, httpServletResponse);
-	}
+    String authorizationHeader = httpServletRequest.getHeader("Authorization");
+
+    String token = null;
+    String userName = null;
+    logger.info("filter is invoked");
+    if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+      token = authorizationHeader.substring(7);
+      userName = jwtUtil.extractUsername(token);
+    }
+
+    if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+      UserDetails userDetails = null;
+
+      userDetails = userLoginService.loadUserByUsername(userName);
+
+      if (jwtUtil.validateToken(token, userDetails)) {
+
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+            new UsernamePasswordAuthenticationToken(userDetails, null,
+                userDetails.getAuthorities());
+        usernamePasswordAuthenticationToken
+            .setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
+        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+      }
+    }
+    filterChain.doFilter(httpServletRequest, httpServletResponse);
+  }
 }
