@@ -44,15 +44,82 @@ databaseChangeLog:
             -  column:
                   name: password
                   value: 12345
-      -  insert:
-            columns:
-            -  column:
-                  name: email
-                  value: xyz@gmail.com
-            -  column:
-                  name: password
-                  value: '121212'
             rollback:
             -  sql:
                   sql: delete from user;
             tableName: user
+- changeSet:
+    id: rename-role-user-table
+    author: umang
+    changes:
+      - renameColumn:  
+          columnDataType:  int  
+          newColumnName:  role_id  
+          oldColumnName:  role  
+          tableName:  user
+- changeSet:
+    id: drop-if-exits-user_created
+    author: umang
+    preConditions:
+      -  onFail: MARK_RAN
+      -  tableExists:
+            tableName: user_created
+    changes:
+      -  dropTable:
+          cascadeContraints: true
+          tableName: user_created
+- changeSet:
+    id: create user_created
+    author: umang 
+    changes:   
+    -  createTable:
+        columns:
+        -  column:
+             autoIncrement: true
+             constraints: 
+               nullable: false
+               primaryKey: true
+             name: id
+             type: INT
+        -  column:
+             name: user_id
+             type: INT 
+        -  column:
+             name: creater_id
+             type: INT
+        -  column:
+             defaultValueComputed: CURRENT_TIMESTAMP
+             name: date_created
+             type: timestamp
+        tableName: user_created 
+-  changeSet:
+    id: foreign-key-for-user_created
+    author: umang
+    changes:
+    -  addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: user_created
+            constraintName: user_detail_fk
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: CASCADE
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: user
+            validate: true    
+-  changeSet:
+      id: foreign-key-for-user_created-2
+      author: umang
+      changes:
+      -  addForeignKeyConstraint:
+            baseColumnNames: creater_id
+            baseTableName: user_created
+            constraintName: user_created_by_fk
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: Restrict
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: user
+            validate: true    
+    

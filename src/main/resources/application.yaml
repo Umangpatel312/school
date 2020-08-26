@@ -44,4 +44,9 @@ spring:
          hibernate.cache.hazelcast.use_lite_member: true
    liquibase:
       enabled: true
-jwt.token.secret: mySecretKey
+jwt.token:
+          secret: mySecretKey
+          expirationTime: 5
+logging.level.org.hibernate:
+                          SQL: DEBUG
+                          type.descriptor.sql.BasicBinder: TRACE

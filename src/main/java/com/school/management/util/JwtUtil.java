@@ -18,6 +18,9 @@ public class JwtUtil {
   @Value("${jwt.token.secret}")
   private String secret;
 
+  @Value("${jwt.token.expirationTime}")
+  private long hour;
+
   Logger logger = LoggerFactory.getLogger(JwtUtil.class);
 
   public String extractUsername(String token) {
@@ -51,7 +54,7 @@ public class JwtUtil {
     logger.info("secret key:" + secret);
     return Jwts.builder().setClaims(claims).setSubject(subject)
         .setIssuedAt(new Date(System.currentTimeMillis()))
-        .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+        .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * hour))
         .signWith(SignatureAlgorithm.HS256, secret).compact();
   }
 

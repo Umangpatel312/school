@@ -108,13 +108,13 @@ public class UserLoginResourceTest {
     final String password = "12345";
     User tempUser = new User(email, password, null);
 
-    MockHttpServletRequestBuilder builder =
-        MockMvcRequestBuilders.post("/create").contentType(MediaType.APPLICATION_JSON_VALUE)
-            .accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8")
-            .characterEncoding("UTF-8").content(this.mapper.writeValueAsBytes(tempUser));
+    MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/create")
+        .contentType(MediaType.APPLICATION_JSON_VALUE).accept(MediaType.APPLICATION_JSON)
+        .characterEncoding("UTF-8").characterEncoding("UTF-8")
+        .content(this.mapper.writeValueAsBytes(tempUser)).requestAttr("username", "abc@gmail.com");
 
-    mockMvc.perform(builder).andExpect(status().isOk()).andExpect(jsonPath("$.email", is(email)))
-        .andExpect(jsonPath("$.password", is(password)));
+    mockMvc.perform(builder).andExpect(status().isCreated())
+        .andExpect(jsonPath("$.email", is(email))).andExpect(jsonPath("$.password", is(password)));
   }
 
 }

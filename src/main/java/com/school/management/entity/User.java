@@ -1,14 +1,25 @@
 package com.school.management.entity;
 
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "user")
+@Getter
+@Setter
+@NoArgsConstructor
 public class User {
 
   @Id
@@ -22,47 +33,28 @@ public class User {
   @Column(name = "password")
   private String password;
 
-  @Column(name = "role")
-  private String role;
+  @Column(name = "role_id")
+  private Integer role;
 
-  public User() {
+  @OneToOne(fetch = FetchType.LAZY, mappedBy = "userId",
+      cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+  private UserCreated userCreated;
 
-  }
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "userCreatedBy",
+      cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+  private List<UserCreated> userAdded;
 
-  public User(String email, String password, String role) {
+  public User(String email, String password, Integer role) {
 
     this.email = email;
     this.password = password;
     this.role = role;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
   }
 
   @Override
   public String toString() {
-    return "SignUpDetail [email=" + email + ", password=" + password + "]";
-  }
-
-  public String getRole() {
-    return role;
-  }
-
-  public void setRole(String role) {
-    this.role = role;
+    return "User [id=" + id + ", email=" + email + ", password=" + password + ", role=" + role
+        + "]";
   }
 
 }
