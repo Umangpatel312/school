@@ -1,16 +1,21 @@
 package com.school.management.dto;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
+@ToString
 public class UserDTO {
 
   private int id;
   private String email;
   private String password;
-  private String role;
+  private int role;
+  // Logger logger = LoggerFactory.getLogger(UserDTO.class);
 
   // public UserDTO() {}
 
@@ -19,6 +24,7 @@ public class UserDTO {
     this.email = email;
     this.password = password;
   }
+
 
 
 }

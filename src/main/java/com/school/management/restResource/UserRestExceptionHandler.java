@@ -27,6 +27,7 @@ public class UserRestExceptionHandler {
     return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
   }
 
+
   @ExceptionHandler
   public ResponseEntity<UserErrorResponse> handleException(Exception exc) {
     logger.info("====> catch exception by controller advice:" + exc);

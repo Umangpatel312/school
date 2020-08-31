@@ -1,15 +1,19 @@
 databaseChangeLog:
 -  changeSet:
-      id: drop signuptable
+      id: drop-signin-table
       author: umang
       preConditions:
       -  onFail: MARK_RAN
       -  tableExists:
             tableName: signin_details
       changes:
-      -  droptable:
+      -  dropTable:
             cascadeConstraints: true
             tableName: signin_details
+-  changeSet:
+      id: create-user
+      author: umang
+      changes:
       -  createTable:
             columns:
             -  column:
@@ -122,4 +126,116 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: user
             validate: true    
-    
+-  changeSet:
+      id: drop-roles-table
+      author: umang
+      preConditions:
+      -  onFail: MARK_RAN
+      -  tableExists:
+            tableName: roles
+      changes:
+      -  dropTable:
+            cascadeConstraints: true
+            tableName: roles
+- changeSet:
+      id: create-roles
+      author: umang
+      changes:
+      -  createTable:
+            columns:
+            -  column:
+                  autoIncrement: true
+                  constraints:
+                     nullable: false
+                     primaryKey: true
+                  name: id
+                  type: int
+            -  column:
+                  constraints:
+                     unique: true
+                  name: role
+                  type: varchar(45)
+            tableName: roles
+-  changeSet:
+      id: foreign-key-role_id-user
+      author: umang
+      changes:
+      -  addForeignKeyConstraint:
+            baseColumnNames: role_id
+            baseTableName: user
+            constraintName: user_role_id_fk
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: set null
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: roles
+            validate: true    
+-  changeSet:
+      id: insert-roles-1
+      author: umang
+      changes:
+      -  insert:
+            tableName: roles
+            columns:
+            -  column:
+                  name: role
+                  value: principal
+-  changeSet:
+      id: insert-roles-2
+      author: umang
+      changes:
+      -  insert:
+            tableName: roles
+            columns:
+            -  column:
+                  name: role
+                  value: teacher
+-  changeSet:
+      id: insert-roles-3
+      author: umang
+      changes:
+      -  insert:
+            tableName: roles
+            columns:
+            -  column:
+                  name: role
+                  value: student
+-  changeSet:  
+      id:  update-user  
+      author:  umang  
+      changes:  
+      -  update:  
+          columns:  
+          -  column:  
+              name:  role_id  
+              value:  1  
+          tableName:  user  
+          where:  id=1
+#-  changeSet:
+#     id: addColumn-user
+#     author: umang
+#     changes:
+#      - addColumn:
+#         tableName: user
+#         columns:
+#            - column:
+#                name: firstname
+#                type: varchar(45)  
+#            - column:
+#                name: lastname
+#                type: varchar(45)
+#-  changeSet:  
+#      id:  update-firstname-user  
+#      author:  umang  
+#      changes:  
+#      -  update:  
+#          columns:  
+#          -  column:  
+#              name:  firstname  
+#              value:  dhairya
+#          -  column:  
+#              name:  lastname  
+#              value:  shah
+#          tableName:  user  
+#          where:  id=1

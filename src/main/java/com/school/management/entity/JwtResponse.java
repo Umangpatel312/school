@@ -11,7 +11,7 @@ import lombok.Setter;
 public class JwtResponse implements Serializable {
 
   private static final long serialVersionUID = -8091879091924046844L;
-  private final String username;
+  // private final String username;
   private final String token;
-  private final long tokenExpirationTime;
+  // private final long tokenExpirationTime;
 }

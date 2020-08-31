@@ -46,6 +46,10 @@ spring:
          hibernate.cache.hazelcast.use_lite_member: true
    liquibase:
       enabled: true
+security.enabled: false
+security:
+  basic:
+    enabled: false
 jwt.token.secret: mySecretKey
 jwt.token:
           secret: mySecretKey

@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.school.management.entity.User;
+import com.school.management.dto.UserDTO;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -31,7 +31,7 @@ public class UserLoginResourceTest {
   void authenticateWorksThroughAllLayor() throws Exception {
     String email = "abc@gmail.com";
     String password = "12345";
-    User tempUser = new User(email, password, null);
+    UserDTO tempUser = new UserDTO(email, password);
 
     MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/authenticate")
         .contentType(MediaType.APPLICATION_JSON_VALUE).accept(MediaType.APPLICATION_JSON)
@@ -46,7 +46,7 @@ public class UserLoginResourceTest {
     final String email = "abc@gmail.com";
     final String password = "123456";
     final String msg = "Bad credentials";
-    User tempUser = new User(email, password, null);
+    UserDTO tempUser = new UserDTO(email, password);
 
     MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/authenticate")
         .contentType(MediaType.APPLICATION_JSON_VALUE).accept(MediaType.APPLICATION_JSON)
@@ -62,7 +62,7 @@ public class UserLoginResourceTest {
     final String email = "abcde@gmail.com";
     final String password = "12345";
     final String msg = "Bad credentials";
-    User tempUser = new User(email, password, null);
+    UserDTO tempUser = new UserDTO(email, password);
 
     MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/authenticate")
         .contentType(MediaType.APPLICATION_JSON_VALUE).accept(MediaType.APPLICATION_JSON)
@@ -74,12 +74,14 @@ public class UserLoginResourceTest {
   }
 
   @Test
-  void update_authenticateRequired() throws Exception {
+  void update_success() throws Exception {
     final String email = "abc@gmail.com";
     final String password = "12345";
-    User tempUser = new User(email, password, null);
 
-    MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.put("/update/abc@gmail.com")
+    UserDTO tempUser = new UserDTO(email, password);
+    tempUser.setRole(2);
+
+    MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.put("/update/1")
         .contentType(MediaType.APPLICATION_JSON_VALUE).accept(MediaType.APPLICATION_JSON)
         .characterEncoding("UTF-8").content(this.mapper.writeValueAsBytes(tempUser));
 
@@ -87,13 +89,13 @@ public class UserLoginResourceTest {
   }
 
   @Test
-  void update_ThrowsuserNotFound_authenticateRequired() throws Exception {
+  void update_ThrowsuserNotFoundWhoIsAdding() throws Exception {
     final String email = "abc@gmail.com";
     final String password = "12345";
     final String msg = "Bad credentials";
-    User tempUser = new User(email, password, null);
+    UserDTO tempUser = new UserDTO(email, password);
 
-    MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.put("/update/abcd@gmail.com")
+    MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.put("/update/10")
         .contentType(MediaType.APPLICATION_JSON_VALUE).accept(MediaType.APPLICATION_JSON)
         .characterEncoding("UTF-8").content(this.mapper.writeValueAsBytes(tempUser));
 
@@ -103,10 +105,12 @@ public class UserLoginResourceTest {
   }
 
   @Test
-  void create_successfullyAdded_authenticateRequired() throws Exception {
+  void create_successfullyAdded() throws Exception {
     final String email = "umang@gmail.com";
     final String password = "12345";
-    User tempUser = new User(email, password, null);
+    final int role = 3;
+    UserDTO tempUser = new UserDTO(email, password);
+    tempUser.setRole(role);
 
     MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/create")
         .contentType(MediaType.APPLICATION_JSON_VALUE).accept(MediaType.APPLICATION_JSON)
@@ -114,7 +118,18 @@ public class UserLoginResourceTest {
         .content(this.mapper.writeValueAsBytes(tempUser)).requestAttr("username", "abc@gmail.com");
 
     mockMvc.perform(builder).andExpect(status().isCreated())
-        .andExpect(jsonPath("$.email", is(email))).andExpect(jsonPath("$.password", is(password)));
+        .andExpect(jsonPath("$.email", is(email))).andExpect(jsonPath("$.password", is(password)))
+        .andExpect(jsonPath("$.role", is(3)));
+  }
+
+  @Test
+  void getUsersByAddedHimParticularRole_success() throws Exception {
+
+    MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/getUserByParticularRole/3")
+        .accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8").characterEncoding("UTF-8")
+        .requestAttr("username", "abc@gmail.com");
+
+    mockMvc.perform(builder).andExpect(status().isOk()).andExpect(jsonPath("$.length()", is(2)));
   }
 
 }

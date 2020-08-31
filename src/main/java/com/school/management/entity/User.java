@@ -8,6 +8,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -33,8 +35,10 @@ public class User {
   @Column(name = "password")
   private String password;
 
-  @Column(name = "role_id")
-  private Integer role;
+  @ManyToOne(fetch = FetchType.LAZY,
+      cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+  @JoinColumn(name = "role_id")
+  private Role role;
 
   @OneToOne(fetch = FetchType.LAZY, mappedBy = "userId",
       cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
@@ -44,17 +48,28 @@ public class User {
       cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
   private List<UserCreated> userAdded;
 
-  public User(String email, String password, Integer role) {
 
+  public void addUserAdded(UserCreated userCreated) {
+    if (userCreated != null) {
+      if (!this.userAdded.contains(userCreated)) {
+        this.userAdded.add(userCreated);
+        userCreated.setUserCreatedBy(this);
+      }
+    }
+  }
+
+  public void addUserCreated() {
+
+  }
+
+  public User(String email, String password) {
     this.email = email;
     this.password = password;
-    this.role = role;
   }
 
   @Override
   public String toString() {
-    return "User [id=" + id + ", email=" + email + ", password=" + password + ", role=" + role
-        + "]";
+    return "User [id=" + id + ", email=" + email + ", password=" + password + "]";
   }
 
 }

@@ -1,0 +1,88 @@
+databaseChangeLog:
+-  changeSet:
+      id: insert-user-2
+      author: umang
+      changes:
+      -  insert:
+            columns:
+            -  column:
+                  name: email
+                  value: umangpatel@gmail.com
+            -  column:
+                  name: password
+                  value: 12345
+            -  column:
+                  name: role_id
+                  value: 2
+            tableName: user
+-  changeSet:
+      id: insert-user-3
+      author: umang
+      changes:
+      -  insert:
+            columns:
+            -  column:
+                  name: email
+                  value: jayminpatel@gmail.com
+            -  column:
+                  name: password
+                  value: 12345
+            -  column:
+                  name: role_id
+                  value: 3
+            tableName: user
+-  changeSet:
+      id: insert-user-4
+      author: umang
+      changes:
+      -  insert:
+            columns:
+            -  column:
+                  name: email
+                  value: jaypatel@gmail.com
+            -  column:
+                  name: password
+                  value: 12345
+            -  column:
+                  name: role_id
+                  value: 3
+            tableName: user 
+-  changeSet:
+      id: insert-usercreated-2
+      author: umang
+      changes:
+      -  insert:
+            columns:
+            -  column:
+                  name: user_id
+                  value: 2
+            -  column:
+                  name: creater_id
+                  value: 1
+            tableName: user_created
+-  changeSet:
+      id: insert-usercreated-3
+      author: umang
+      changes:
+      -  insert:
+            columns:
+            -  column:
+                  name: user_id
+                  value: 3
+            -  column:
+                  name: creater_id
+                  value: 1
+            tableName: user_created
+-  changeSet:
+      id: insert-usercreated-4
+      author: umang
+      changes:
+      -  insert:
+            columns:
+            -  column:
+                  name: user_id
+                  value: 4
+            -  column:
+                  name: creater_id
+                  value: 1
+            tableName: user_created

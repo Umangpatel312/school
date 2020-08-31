@@ -11,6 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,26 +49,33 @@ public class UserLoginResource {
       throws Exception {
     logger.info("===>resources is processed");
 
-    authenticationManager.authenticate(
+    final Authentication authentication = authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(theUserDTO.getEmail(), theUserDTO.getPassword()));
 
-    final String jwttoken = jwtUtil.generateToken(theUserDTO.getEmail());
-    logger.info(jwttoken);
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+    org.springframework.security.core.userdetails.User tempUser =
+        (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
+    logger.info("principal:" + tempUser);
+    // final UserDTO userDTO = userLoginService.findByEmail(theUserDTO.getEmail());
+    final String jwttoken = jwtUtil.generateToken(authentication);
+
     logger.info("end of the resources<====");
+
     HttpHeaders httpHeaders = new HttpHeaders();
     httpHeaders.add("Authorization", "Bearer " + jwttoken);
-    JwtResponse jwtResponse = new JwtResponse(theUserDTO.getEmail(), jwttoken,
-        System.currentTimeMillis() + (hour * 60 * 60 * 1000));
+
+    JwtResponse jwtResponse = new JwtResponse(jwttoken);
     return new ResponseEntity<>(jwtResponse, httpHeaders, HttpStatus.OK);
   }
 
-  @PutMapping(value = "/update/{email:.+}", consumes = MediaType.APPLICATION_JSON_VALUE,
+  // @PutMapping(value = "/update/{email:.+}", consumes = MediaType.APPLICATION_JSON_VALUE,
+  @PutMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE,
       produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<UserDTO> update(@PathVariable String email, @RequestBody UserDTO theUserDTO)
-      throws Exception {
-    logger.info("===>update method is processed:" + email);
+  public ResponseEntity<UserDTO> update(@PathVariable("id") int userId,
+      @RequestBody UserDTO theUserDTO) throws Exception {
+    logger.info("===>update method is processed:" + userId);
     UserDTO tempUserDTO = null;
-    tempUserDTO = userLoginService.update(email, theUserDTO);
+    tempUserDTO = userLoginService.update(userId, theUserDTO);
     logger.info("===>ended update method: " + tempUserDTO);
     return ResponseEntity.ok(tempUserDTO);
   }
@@ -75,20 +84,20 @@ public class UserLoginResource {
       produces = "application/json")
   public ResponseEntity<UserDTO> create(@RequestBody UserDTO theUserDTO,
       @RequestAttribute("username") String username) throws Exception {
-    logger.info("token getting create method:" + username);
-    return new ResponseEntity<UserDTO>(userLoginService.save(theUserDTO, username),
-        HttpStatus.CREATED);
+    logger.info("token getting create method:" + username + " dto: " + theUserDTO);
+    // throw new Exception();
+    UserDTO userDTO = userLoginService.save(theUserDTO, username);
+    logger.info("end-resourc-create: " + userDTO);
+    return new ResponseEntity<UserDTO>(userDTO, HttpStatus.CREATED);
   }
 
-  @GetMapping(value = "/users")
-  public ResponseEntity<List<UserDTO>> get() {
-    List<UserDTO> userDTOs = userLoginService.findAll();
-    return new ResponseEntity<List<UserDTO>>(userDTOs, HttpStatus.OK);
-  }
+  @GetMapping(value = "/getUserByParticularRole/{roleId}")
+  public ResponseEntity<List<UserDTO>> getUsersByParticularRole(@PathVariable("roleId") int roleId,
+      @RequestAttribute("username") String username) {
 
-  public Object getUsersByAddedHim() {
-    userLoginService.findByAddedHim();
-    return null;
+    logger.info("===>getUerByrole----");
+    List<UserDTO> listOfUserDTO = userLoginService.findByParticularRole(username, roleId);
+    return new ResponseEntity<List<UserDTO>>(listOfUserDTO, HttpStatus.OK);
   }
 
   @GetMapping("/")

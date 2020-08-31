@@ -46,7 +46,7 @@ spring:
       enabled: true
 jwt.token:
           secret: mySecretKey
-          expirationTime: 5
+          expirationTime: 300
 logging.level.org.hibernate:
                           SQL: DEBUG
                           type.descriptor.sql.BasicBinder: TRACE

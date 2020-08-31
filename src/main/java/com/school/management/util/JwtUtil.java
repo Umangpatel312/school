@@ -7,6 +7,7 @@ import java.util.function.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Claims;
@@ -19,7 +20,7 @@ public class JwtUtil {
   private String secret;
 
   @Value("${jwt.token.expirationTime}")
-  private long hour;
+  private long minute;
 
   Logger logger = LoggerFactory.getLogger(JwtUtil.class);
 
@@ -44,9 +45,13 @@ public class JwtUtil {
     return extractExpiration(token).before(new Date());
   }
 
-  public String generateToken(String username) {
+  public String generateToken(Authentication authentication) {
+    RoleToIdUtil roleUtil = new RoleToIdUtil();
+    final int roleId = roleUtil.roleToId(authentication);
     Map<String, Object> claims = new HashMap<>();
-    return createToken(claims, username);
+    claims.put("roleId", roleId);
+    // claims.put("userId", userDTO.getId());
+    return createToken(claims, authentication.getName());
   }
 
   private String createToken(Map<String, Object> claims, String subject) {
@@ -54,7 +59,7 @@ public class JwtUtil {
     logger.info("secret key:" + secret);
     return Jwts.builder().setClaims(claims).setSubject(subject)
         .setIssuedAt(new Date(System.currentTimeMillis()))
-        .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * hour))
+        .setExpiration(new Date(System.currentTimeMillis() + (minute * 60 * 1000)))
         .signWith(SignatureAlgorithm.HS256, secret).compact();
   }
 

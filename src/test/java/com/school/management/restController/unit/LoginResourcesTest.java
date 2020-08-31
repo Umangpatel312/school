@@ -49,12 +49,12 @@ public class LoginResourcesTest {
         "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhYmNAZ21haWwuY29tIiwiZXhwIjoxNTk3MjY3OTgyLCJpYXQiOjE1OTcyMzE5ODJ9.XynUqR0QcnJ9liME-Ct2LyBWqZHYfv77HBRHMwXYmFM";
 
     com.school.management.entity.User tempUser =
-        new com.school.management.entity.User(email, password, null);
+        new com.school.management.entity.User(email, password);
 
     Mockito.when(userLoginService.loadUserByUsername(Mockito.anyString()))
         .thenReturn(new User(email, password, emptyList()));
 
-    Mockito.when(jwtUtil.generateToken(Mockito.anyString())).thenReturn(jwtToken);
+    Mockito.when(jwtUtil.generateToken(Mockito.any())).thenReturn(jwtToken);
 
     MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/authenticate")
         .contentType(MediaType.APPLICATION_JSON_VALUE).accept(MediaType.APPLICATION_JSON)
@@ -74,7 +74,7 @@ public class LoginResourcesTest {
     // jwtToken="eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhYmNAZ21haWwuY29tIiwiZXhwIjoxNTk3MjY3OTgyLCJpYXQiOjE1OTcyMzE5ODJ9.XynUqR0QcnJ9liME-Ct2LyBWqZHYfv77HBRHMwXYmFM";
     String msg = "user not found";
     com.school.management.entity.User tempUser =
-        new com.school.management.entity.User(email, password, null);
+        new com.school.management.entity.User(email, password);
 
     Mockito.when(userLoginService.loadUserByUsername(Mockito.anyString()))
         .thenThrow(new UserNotFoundException(msg));
