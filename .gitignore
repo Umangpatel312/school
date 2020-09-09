@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ######################
 # Project Specific
 ######################
@@ -148,3 +149,41 @@ Desktop.ini
 .eslintcache
 
 OptionalDemo.java
+=======
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+
+/bin
+>>>>>>> b83ec7dacdd7aab3e93860404b27f772fc661bbe
