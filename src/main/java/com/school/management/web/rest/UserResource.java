@@ -24,6 +24,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -185,5 +187,13 @@ public class UserResource {
         log.debug("REST request to delete User: {}", login);
         userService.deleteUser(login);
         return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName,  "A user is deleted with identifier " + login, login)).build();
+    }
+
+    @GetMapping("/studnetsAdded")
+    public List<User> getStudentByAddedHim(){
+        String login= SecurityContextHolder.getContext().getAuthentication().getName();
+        log.debug("Rest request to get Studentss:"+login);
+        List<User> listOfUser= userService.findAllByCreatedBy(login);
+        return listOfUser;
     }
 }

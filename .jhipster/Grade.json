@@ -1,0 +1,25 @@
+{
+  "name": "Grade",
+  "fields": [
+    {
+      "fieldName": "grade",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "division",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [],
+  "changelogDate": "20200908095903",
+  "entityTableName": "grade",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}

@@ -1,0 +1,16 @@
+entity AttendenceDate{
+	date Instant
+}
+entity Grade{
+	grade Integer,
+    division String
+}
+entity Attendence{
+}
+relationship ManyToOne{
+	Attendence{grade(id)} to Grade,
+    Attendence{attendenceDate(id)} to AttendenceDate,
+    Attendence{user(login)} to User
+}
+dto * with mapstruct
+service all with serviceClass

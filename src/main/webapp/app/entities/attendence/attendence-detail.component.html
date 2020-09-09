@@ -1,0 +1,42 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="attendence">
+            <h2><span>Attendence</span> {{ attendence.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span>Grade</span></dt>
+                <dd>
+                    <div *ngIf="attendence.gradeId">
+                        <a [routerLink]="['/grade', attendence.gradeId, 'view']">{{ attendence.gradeId }}</a>
+                    </div>
+                </dd>
+                <dt><span>Attendence Date</span></dt>
+                <dd>
+                    <div *ngIf="attendence.attendenceDateId">
+                        <a [routerLink]="['/attendence-date', attendence.attendenceDateId, 'view']">{{ attendence.attendenceDateId }}</a>
+                    </div>
+                </dd>
+                <dt><span>User</span></dt>
+                <dd>
+                    {{ attendence.userLogin }}
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/attendence', attendence.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

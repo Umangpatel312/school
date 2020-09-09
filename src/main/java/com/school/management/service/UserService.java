@@ -294,6 +294,9 @@ public class UserService {
         return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
     }
 
+    public List<User> findAllByCreatedBy(String login){
+        return userRepository.findAllByCreatedBy(login);
+    }
 
     private void clearUserCaches(User user) {
         Objects.requireNonNull(cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE)).evict(user.getLogin());
