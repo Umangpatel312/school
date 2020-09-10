@@ -4,7 +4,6 @@ import { errorRoute } from './layouts/error/error.route';
 import { navbarRoute } from './layouts/navbar/navbar.route';
 import { DEBUG_INFO_ENABLED } from 'app/app.constants';
 import { Authority } from 'app/shared/constants/authority.constants';
-
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 
 const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
@@ -20,6 +19,14 @@ const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
           },
           canActivate: [UserRouteAccessService],
           loadChildren: () => import('./admin/admin-routing.module').then(m => m.AdminRoutingModule),
+        },
+        {
+          path: 'query',
+          data: {
+            authorities: [Authority.ADMIN, Authority.TEACHER],
+          },
+          canActivate: [UserRouteAccessService],
+          loadChildren: () => import('./query/student-routing.module').then(m => m.StudentRoutingModule),
         },
         {
           path: 'account',

@@ -46,10 +46,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
   @Query("select u from User u inner join u.authorities a where u.createdBy=?1 "
       + "and a.name=?2 or u.createdBy in (select u.login from User u "
       + "inner join u.authorities a where u.createdBy=?1 and a.name='ROLE_TEACHER')")
-  List<User> findAllByCreatedBy(String login, String authorities);
+  Page<User> findAllByCreatedBy(String login, String authorities, Pageable pageable);
 
   @Query("select u from User u inner join u.authorities a where u.createdBy=?1 and a.name=?2")
-  List<User> findAllTeacherByCreatedBy(String login, String authorities);
+  Page<User> findAllTeacherByCreatedBy(String login, String authorities, Pageable pageable);
 
 
 }

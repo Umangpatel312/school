@@ -36,4 +36,18 @@ export class UserService {
   authorities(): Observable<string[]> {
     return this.http.get<string[]>(SERVER_API_URL + 'api/users/authorities');
   }
+
+  getStudent(role: string, req?: Pagination): Observable<HttpResponse<IUser[]>> {
+    console.log('data', req);
+    const options = createRequestOption(req);
+    const url = SERVER_API_URL + `api/studentsAdded/${role}`;
+    return this.http.get<IUser[]>(url, { params: options, observe: 'response' });
+  }
+  // getStudent(role: string): Observable<IUser[]> {
+  //   // const options = createRequestOption(req);
+  //   console.log(role)
+  //   const url = SERVER_API_URL + `api/studentsAdded/${role}`
+  //   console.log(url)
+  //   return this.http.get<IUser[]>(url);
+  // }
 }

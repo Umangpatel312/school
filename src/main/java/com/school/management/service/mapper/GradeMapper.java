@@ -11,9 +11,6 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring", uses = {})
 public interface GradeMapper extends EntityMapper<GradeDTO, Grade> {
-
-
-
     default Grade fromId(Long id) {
         if (id == null) {
             return null;

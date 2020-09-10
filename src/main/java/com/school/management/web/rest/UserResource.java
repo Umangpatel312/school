@@ -205,11 +205,15 @@ public class UserResource {
   @GetMapping("/studentsAdded/{role}")
   @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\") or hasAuthority(\""
       + AuthoritiesConstants.TEACHER + "\")")
-  public List<UserDTO> getStudentByAddedHim(@PathVariable("role") String role) {
+  public ResponseEntity<List<UserDTO>> getStudentByAddedHim(@PathVariable("role") String role,
+      Pageable pageable) {
     String login = SecurityUtils.getCurrentUserLogin().get();
-    log.info("Rest request to get Studentss: {}, {}", login, role);
+    // log.info("Rest request to get Studentss: {}, {}", login, role);
     log.debug("Rest request to get Studentss: {}, {}", login, role);
-    List<UserDTO> listOfUserDTO = userService.findAllByCreatedBy(login, role);
-    return listOfUserDTO;
+    log.debug("page details:{},{}", pageable.getPageNumber(), pageable.getPageSize());
+    Page<UserDTO> page = userService.findAllByCreatedBy(login, role, pageable);
+    HttpHeaders headers = PaginationUtil
+        .generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+    return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
   }
 }

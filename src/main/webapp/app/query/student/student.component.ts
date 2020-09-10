@@ -1,22 +1,20 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpResponse, HttpHeaders } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Subscription, combineLatest } from 'rxjs';
-import { ActivatedRoute, ParamMap, Router, Data } from '@angular/router';
-import { JhiEventManager } from 'ng-jhipster';
-
-import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { AccountService } from 'app/core/auth/account.service';
-import { Account } from 'app/core/user/account.model';
-import { UserService } from 'app/core/user/user.service';
-import { User } from 'app/core/user/user.model';
-import { UserManagementDeleteDialogComponent } from './user-management-delete-dialog.component';
+import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
+import { JhiEventManager } from 'ng-jhipster';
+import { combineLatest, Subscription, Observable } from 'rxjs';
+import { IUser, User } from '../../core/user/user.model';
+import { UserService } from '../../core/user/user.service';
+import { HttpResponse, HttpHeaders } from '@angular/common/http';
 
 @Component({
-  selector: 'jhi-user-mgmt',
-  templateUrl: './user-management.component.html',
+  selector: 'jhi-student',
+  templateUrl: './student.component.html',
+  styleUrls: ['./student.component.scss'],
 })
-export class UserManagementComponent implements OnInit, OnDestroy {
+export class StudentComponent implements OnInit {
   currentAccount: Account | null = null;
   users: User[] | null = null;
   userListSubscription?: Subscription;
@@ -26,6 +24,8 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   predicate!: string;
   ascending!: boolean;
 
+  roleName: string | any;
+  user: IUser[] | null = null;
   constructor(
     private userService: UserService,
     private accountService: AccountService,
@@ -34,36 +34,20 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     private eventManager: JhiEventManager,
     private modalService: NgbModal
   ) {}
+  // constructor(private userService: UserService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    console.log('ngOnInit');
-    this.accountService.identity().subscribe(account => (this.currentAccount = account));
     this.userListSubscription = this.eventManager.subscribe('userListModification', () => this.loadAll());
-    console.log('first');
-    this.handleNavigation();
-  }
-
-  ngOnDestroy(): void {
-    if (this.userListSubscription) {
-      this.eventManager.destroy(this.userListSubscription);
-    }
-  }
-
-  setActive(user: User, isActivated: boolean): void {
-    this.userService.update({ ...user, activated: isActivated }).subscribe(() => this.loadAll());
-  }
-
-  trackIdentity(index: number, item: User): any {
-    return item.id;
-  }
-
-  deleteUser(user: User): void {
-    const modalRef = this.modalService.open(UserManagementDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.user = user;
+    this.activatedRoute.params.subscribe(data => {
+      console.log(data);
+      this.roleName = data['role'];
+      this.handleNavigation();
+    });
   }
 
   transition(): void {
-    this.router.navigate(['./'], {
+    // const url=`./${role}`
+    this.router.navigate([`./${this.roleName}`], {
       relativeTo: this.activatedRoute.parent,
       queryParams: {
         page: this.page,
@@ -85,9 +69,8 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   }
 
   private loadAll(): void {
-    console.log('second');
     this.userService
-      .query({
+      .getStudent(this.roleName, {
         page: this.page - 1,
         size: this.itemsPerPage,
         sort: this.sort(),
@@ -100,7 +83,6 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     if (this.predicate !== 'id') {
       result.push('id');
     }
-    console.log(result);
     return result;
   }
 
@@ -109,4 +91,32 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     this.users = users;
     console.log(users);
   }
+
+  trackIdentity(index: number, item: User): any {
+    return item.id;
+  }
+  // ngOnInit(): void {
+  //   // this.route.children.
+  //   console.log("student-component")
+  //   this.roleName = this.activatedRoute.snapshot.paramMap.get('role');
+
+  //   this.activatedRoute.params.pipe(
+  //     switchMap(data => {
+  //       console.log(data)
+  //       return this.userService.getStudent(data['role'])
+  //     })
+  //   ).
+  //     subscribe
+  //     (response => {
+  //       console.log(response)
+  //       this.user = response
+  //     });
+  // }
 }
+
+// this.route.data.pipe(
+//   switchMap(data => {
+//     console.log(data)
+//     return this.userService.getStudent(data['role'])
+//   })
+// ).

@@ -284,15 +284,15 @@ public class UserService {
         .collect(Collectors.toList());
   }
 
-  public List<UserDTO> findAllByCreatedBy(String login, String authorities) {
-    List<User> listOfUser = null;
+  public Page<UserDTO> findAllByCreatedBy(String login, String authorities, Pageable pageable) {
+    Page<User> listOfUser = null;
     if (authorities.equals(AuthoritiesConstants.USER)) {
-      listOfUser = userRepository.findAllByCreatedBy(login, authorities);
+      listOfUser = userRepository.findAllByCreatedBy(login, authorities, pageable);
       // log.debug("listOfUser size:{}", listOfUser.size());
     } else
-      listOfUser = userRepository.findAllTeacherByCreatedBy(login, authorities);
-    log.debug("OUt listOfuser: size:{}", listOfUser.size());
-    return listOfUser.stream().map(UserDTO::new).collect(Collectors.toList());
+      listOfUser = userRepository.findAllTeacherByCreatedBy(login, authorities, pageable);
+    log.debug("OUt listOfuser: size:{}", listOfUser.getSize());
+    return listOfUser.map(UserDTO::new);
   }
 
   private void clearUserCaches(User user) {
