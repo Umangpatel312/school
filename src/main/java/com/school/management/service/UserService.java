@@ -284,13 +284,14 @@ public class UserService {
         .collect(Collectors.toList());
   }
 
-  public Page<UserDTO> findAllByCreatedBy(String login, String authority, Pageable pageable) {
+  public Page<UserDTO> findAllByCreatedBy(String authority, Pageable pageable) {
+    String login = SecurityUtils.getCurrentUserLogin().get();
     Page<User> listOfUser = null;
     if (authority.equals(AuthoritiesConstants.USER)) {
-        /*
-        TODO:
-
-         */
+      /*
+       * TODO:
+       * 
+       */
       listOfUser = userRepository.findAllByCreatedBy(login, authority, pageable);
       // log.debug("listOfUser size:{}", listOfUser.size());
     } else

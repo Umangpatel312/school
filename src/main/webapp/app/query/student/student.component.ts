@@ -4,7 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AccountService } from 'app/core/auth/account.service';
 import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { JhiEventManager } from 'ng-jhipster';
-import { combineLatest, Subscription, Observable } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
 import { IUser, User } from '../../core/user/user.model';
 import { UserService } from '../../core/user/user.service';
 import { HttpResponse, HttpHeaders } from '@angular/common/http';

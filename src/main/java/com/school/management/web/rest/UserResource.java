@@ -27,7 +27,6 @@ import com.school.management.config.Constants;
 import com.school.management.domain.User;
 import com.school.management.repository.UserRepository;
 import com.school.management.security.AuthoritiesConstants;
-import com.school.management.security.SecurityUtils;
 import com.school.management.service.MailService;
 import com.school.management.service.UserService;
 import com.school.management.service.dto.UserDTO;
@@ -203,27 +202,24 @@ public class UserResource {
   }
 
   /*
-  TODO: role should not be passed in the URL
-  It should be extracted from the User Login from the SecurityUtils
-  String login = SecurityUtils.getCurrentUserLogin().get();
-  User user = userRepo.getBYLogin(..);
-  user.getAuthority
-
-
-  Above logic should happen in service.
-  You should just call
-  `Page<UserDTO> page = userService.findAllByCreatedBy(login, pageable);`
+   * TODO: role should not be passed in the URL It should be extracted from the User Login from the
+   * SecurityUtils String login = SecurityUtils.getCurrentUserLogin().get(); User user =
+   * userRepo.getBYLogin(..); user.getAuthority
+   * 
+   * 
+   * Above logic should happen in service. You should just call `Page<UserDTO> page =
+   * userService.findAllByCreatedBy(login, pageable);`
    */
   @GetMapping("/studentsAdded/{role}")
   @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\") or hasAuthority(\""
       + AuthoritiesConstants.TEACHER + "\")")
   public ResponseEntity<List<UserDTO>> getStudentByAddedHim(@PathVariable("role") String role,
       Pageable pageable) {
-    String login = SecurityUtils.getCurrentUserLogin().get();
+
     // log.info("Rest request to get Studentss: {}, {}", login, role);
-    log.debug("Rest request to get Studentss: {}, {}", login, role);
+    log.debug("Rest request to get Studentss: {}, {}", role);
     log.debug("page details:{},{}", pageable.getPageNumber(), pageable.getPageSize());
-    Page<UserDTO> page = userService.findAllByCreatedBy(login, role, pageable);
+    Page<UserDTO> page = userService.findAllByCreatedBy(role, pageable);
     HttpHeaders headers = PaginationUtil
         .generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
     return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);

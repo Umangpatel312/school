@@ -1,0 +1,58 @@
+application {
+  config {
+    applicationType monolith
+    authenticationType jwt
+    baseName school
+    blueprints []
+    buildTool gradle
+    cacheProvider ehcache
+    clientFramework angularX
+    clientPackageManager npm
+    clientTheme none
+    creationTimestamp 1599283546494
+    databaseType sql
+    devDatabaseType mysql
+    dtoSuffix DTO
+    embeddableLaunchScript false
+    enableHibernateCache true
+    enableSwaggerCodegen false
+    enableTranslation false
+    jhiPrefix jhi
+    jhipsterVersion "6.10.1"
+    jwtSecretKey "MDgxMTdmMmU4NWNhZDVlNjdlMmZhZjlkMzRhZWFmNGVjNDBiNTE0NDhiM2ViMWUxNzY3MzBmYmZkZWY2ZTJhODQ4YWZiNzIwMjZkZjI5MTQ3NmY0MDdhYWMzNGZjNDkyY2VmNDY5YTc4MDgyYmU0MDIzYTkyMmI4ZDllNTY4YWI="
+    languages [en, fr]
+    messageBroker false
+    nativeLanguage en
+    otherModules []
+    packageName com.school.management
+    prodDatabaseType mysql
+    searchEngine false
+    serverPort 8080
+    serviceDiscoveryType false
+    skipClient false
+    skipServer false
+    skipUserManagement false
+    testFrameworks []
+    useSass true
+    websocket false
+  }
+
+  entities Attendence, AttendenceDate, Grade
+}
+
+entity Attendence
+entity AttendenceDate {
+  date Instant
+}
+entity Grade {
+  grade Integer,
+  division String
+}
+relationship ManyToOne {
+  Attendence{grade} to Grade,
+  Attendence{attendenceDate} to AttendenceDate,
+  Attendence{user(login)} to User
+}
+
+dto Attendence, AttendenceDate, Grade with mapstruct
+service Attendence, AttendenceDate, Grade with serviceClass

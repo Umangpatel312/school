@@ -13,6 +13,7 @@ export class MainComponent implements OnInit {
 
   ngOnInit(): void {
     // try to log in automatically
+    console.log('bootstrap main component');
     this.accountService.identity().subscribe();
 
     this.router.events.subscribe(event => {
