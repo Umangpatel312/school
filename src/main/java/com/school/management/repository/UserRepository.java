@@ -3,6 +3,8 @@ package com.school.management.repository;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+
+import com.school.management.domain.Authority;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -48,8 +50,17 @@ public interface UserRepository extends JpaRepository<User, Long> {
       + "inner join u.authorities a where u.createdBy=?1 and a.name='ROLE_TEACHER')")
   Page<User> findAllByCreatedBy(String login, String authorities, Pageable pageable);
 
+  /*
+  TODO: You don't need this method. JPA automatically creates the implementation for the method.
+ `findAllByCreatedByAndAuthoritiesContains` is one example I added. You don't need to write the query.
+ Also, you shouldn't need to create this method: findAllByCreatedBy
+   */
   @Query("select u from User u inner join u.authorities a where u.createdBy=?1 and a.name=?2")
   Page<User> findAllTeacherByCreatedBy(String login, String authorities, Pageable pageable);
+
+  Page<User> findAllByCreatedByAndAuthoritiesContains(String login, Authority authority, Pageable pageable);
+
+
 
 
 }

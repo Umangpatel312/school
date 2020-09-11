@@ -275,7 +275,7 @@ public class UserService {
 
   /**
    * Gets a list of all the authorities.
-   * 
+   *
    * @return a list of all the authorities.
    */
   @Transactional(readOnly = true)
@@ -284,13 +284,17 @@ public class UserService {
         .collect(Collectors.toList());
   }
 
-  public Page<UserDTO> findAllByCreatedBy(String login, String authorities, Pageable pageable) {
+  public Page<UserDTO> findAllByCreatedBy(String login, String authority, Pageable pageable) {
     Page<User> listOfUser = null;
-    if (authorities.equals(AuthoritiesConstants.USER)) {
-      listOfUser = userRepository.findAllByCreatedBy(login, authorities, pageable);
+    if (authority.equals(AuthoritiesConstants.USER)) {
+        /*
+        TODO:
+
+         */
+      listOfUser = userRepository.findAllByCreatedBy(login, authority, pageable);
       // log.debug("listOfUser size:{}", listOfUser.size());
     } else
-      listOfUser = userRepository.findAllTeacherByCreatedBy(login, authorities, pageable);
+      listOfUser = userRepository.findAllTeacherByCreatedBy(login, authority, pageable);
     log.debug("OUt listOfuser: size:{}", listOfUser.getSize());
     return listOfUser.map(UserDTO::new);
   }

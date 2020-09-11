@@ -202,6 +202,18 @@ public class UserResource {
         "A user" + " is deleted with " + "identifier " + login, login)).build();
   }
 
+  /*
+  TODO: role should not be passed in the URL
+  It should be extracted from the User Login from the SecurityUtils
+  String login = SecurityUtils.getCurrentUserLogin().get();
+  User user = userRepo.getBYLogin(..);
+  user.getAuthority
+
+
+  Above logic should happen in service.
+  You should just call
+  `Page<UserDTO> page = userService.findAllByCreatedBy(login, pageable);`
+   */
   @GetMapping("/studentsAdded/{role}")
   @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\") or hasAuthority(\""
       + AuthoritiesConstants.TEACHER + "\")")
