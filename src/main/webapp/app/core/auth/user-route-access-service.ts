@@ -23,9 +23,10 @@ export class UserRouteAccessService implements CanActivate {
     // that the client has a principal too, if they already logged in by the server.
     // This could happen on a page refresh.
 
-    this.router.events.subscribe(data => console.log(data));
+    // this.router.events.subscribe(data => console.log(data));
     console.log(route.data);
-    this.route.data.subscribe(d => console.log(d));
+    // this.route.data.subscribe(d => console.log(d));
+    console.log(authorities);
     return this.checkLogin(authorities, state.url);
   }
 

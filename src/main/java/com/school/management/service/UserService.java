@@ -2,6 +2,7 @@ package com.school.management.service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -284,21 +285,7 @@ public class UserService {
         .collect(Collectors.toList());
   }
 
-  public Page<UserDTO> findAllByCreatedBy(String authority, Pageable pageable) {
-    String login = SecurityUtils.getCurrentUserLogin().get();
-    Page<User> listOfUser = null;
-    if (authority.equals(AuthoritiesConstants.USER)) {
-      /*
-       * TODO:
-       * 
-       */
-      listOfUser = userRepository.findAllByCreatedBy(login, authority, pageable);
-      // log.debug("listOfUser size:{}", listOfUser.size());
-    } else
-      listOfUser = userRepository.findAllTeacherByCreatedBy(login, authority, pageable);
-    log.debug("OUt listOfuser: size:{}", listOfUser.getSize());
-    return listOfUser.map(UserDTO::new);
-  }
+
 
   private void clearUserCaches(User user) {
     Objects.requireNonNull(cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE))
@@ -307,5 +294,36 @@ public class UserService {
       Objects.requireNonNull(cacheManager.getCache(UserRepository.USERS_BY_EMAIL_CACHE))
           .evict(user.getEmail());
     }
+  }
+
+  public Page<UserDTO> findAllByCreatedBy(Authority authority, Pageable pageable) {
+    String login = SecurityUtils.getCurrentUserLogin().get();
+    Page<User> listOfUser = null;
+    log.debug("user service:== findAllByCreatedBy:{}", login);
+    int roleId = AuthoritiesConstants.map.get(authority.getName());
+    if (roleId == 1) {
+      /*
+       * TODO:
+       *
+       */
+      log.info("name:=={},{}", authority.getName(), roleId);
+      listOfUser = userRepository.findAllByCreatedBy(login, roleId, pageable);
+      // log.debug("listOfUser size:{}", listOfUser.size());
+    } else {
+      Set<Authority> set = Collections.singleton(authority);
+      listOfUser = userRepository.findAllTeacherByCreatedBy(pageable);
+    }
+    log.debug("OUt listOfuser: size:{}", listOfUser.getSize());
+    log.debug("list:{}", listOfUser);
+    return listOfUser.map(UserDTO::new);
+  }
+
+  public List<UserDTO> findAllByRole(String role) {
+
+    long roleId = AuthoritiesConstants.map.get(role);
+    log.info("service get by role:{}", role);
+    List<User> listOfUser = userRepository.findAllByAuthoritiesIn(roleId);
+    log.info("listOfuser:" + listOfUser);
+    return listOfUser.stream().map(UserDTO::new).collect(Collectors.toList());
   }
 }

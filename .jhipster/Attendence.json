@@ -3,18 +3,10 @@
   "fields": [],
   "relationships": [
     {
-      "relationshipType": "many-to-one",
-      "otherEntityName": "grade",
+      "relationshipType": "one-to-many",
+      "otherEntityName": "attendenceStudent",
       "otherEntityRelationshipName": "attendence",
-      "relationshipName": "grade",
-      "otherEntityField": "id"
-    },
-    {
-      "relationshipType": "many-to-one",
-      "otherEntityName": "attendenceDate",
-      "otherEntityRelationshipName": "attendence",
-      "relationshipName": "attendenceDate",
-      "otherEntityField": "id"
+      "relationshipName": "attendenceStudent"
     },
     {
       "relationshipType": "many-to-one",
@@ -22,6 +14,20 @@
       "otherEntityRelationshipName": "attendence",
       "relationshipName": "user",
       "otherEntityField": "login"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "grade",
+      "otherEntityRelationshipName": "attendence",
+      "relationshipName": "grade",
+      "otherEntityField": "grade"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "attendenceDate",
+      "otherEntityRelationshipName": "attendence",
+      "relationshipName": "attendenceDate",
+      "otherEntityField": "date"
     }
   ],
   "changelogDate": "20200908100003",

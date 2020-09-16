@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.school.management.config.Constants;
+import com.school.management.domain.Authority;
 import com.school.management.domain.User;
 import com.school.management.repository.UserRepository;
 import com.school.management.security.AuthoritiesConstants;
@@ -167,7 +168,8 @@ public class UserResource {
    * @return a string list of all roles.
    */
   @GetMapping("/users/authorities")
-  @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+  @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\") or hasAuthority(\""
+      + AuthoritiesConstants.TEACHER + "\")")
   public List<String> getAuthorities() {
     return userService.getAuthorities();
   }
@@ -200,6 +202,9 @@ public class UserResource {
     return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName,
         "A user" + " is deleted with " + "identifier " + login, login)).build();
   }
+  /*
+   * as per required rest api started here
+   */
 
   /*
    * TODO: role should not be passed in the URL It should be extracted from the User Login from the
@@ -213,15 +218,21 @@ public class UserResource {
   @GetMapping("/studentsAdded/{role}")
   @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\") or hasAuthority(\""
       + AuthoritiesConstants.TEACHER + "\")")
-  public ResponseEntity<List<UserDTO>> getStudentByAddedHim(@PathVariable("role") String role,
-      Pageable pageable) {
+  public ResponseEntity<List<UserDTO>> getStudentByAddedHim(
+      @PathVariable("role") Authority authority, Pageable pageable) {
 
-    // log.info("Rest request to get Studentss: {}, {}", login, role);
-    log.debug("Rest request to get Studentss: {}, {}", role);
     log.debug("page details:{},{}", pageable.getPageNumber(), pageable.getPageSize());
-    Page<UserDTO> page = userService.findAllByCreatedBy(role, pageable);
+    Page<UserDTO> page = userService.findAllByCreatedBy(authority, pageable);
     HttpHeaders headers = PaginationUtil
         .generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+    log.info("--===return list userresource:{}", page.get().toArray());
     return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+  }
+
+  @GetMapping("/getUserByRole/{role}")
+  public ResponseEntity<List<UserDTO>> getTeacher(@PathVariable("role") String role) {
+    log.info("?????role:{}", role);
+    List<UserDTO> listOfUsersDTO = userService.findAllByRole(role);
+    return new ResponseEntity<>(listOfUsersDTO, HttpStatus.OK);
   }
 }

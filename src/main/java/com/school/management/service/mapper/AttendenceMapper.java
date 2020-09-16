@@ -9,18 +9,22 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link Attendence} and its DTO {@link AttendenceDTO}.
  */
-@Mapper(componentModel = "spring", uses = {GradeMapper.class, AttendenceDateMapper.class, UserMapper.class})
+@Mapper(componentModel = "spring", uses = {UserMapper.class, GradeMapper.class, AttendenceDateMapper.class})
 public interface AttendenceMapper extends EntityMapper<AttendenceDTO, Attendence> {
 
-    @Mapping(source = "grade.id", target = "gradeId")
-    @Mapping(source = "attendenceDate.id", target = "attendenceDateId")
     @Mapping(source = "user.id", target = "userId")
     @Mapping(source = "user.login", target = "userLogin")
+    @Mapping(source = "grade.id", target = "gradeId")
+    @Mapping(source = "grade.grade", target = "gradeGrade")
+    @Mapping(source = "attendenceDate.id", target = "attendenceDateId")
+    @Mapping(source = "attendenceDate.date", target = "attendenceDateDate")
     AttendenceDTO toDto(Attendence attendence);
 
+    @Mapping(target = "attendenceStudents", ignore = true)
+    @Mapping(target = "removeAttendenceStudent", ignore = true)
+    @Mapping(source = "userId", target = "user")
     @Mapping(source = "gradeId", target = "grade")
     @Mapping(source = "attendenceDateId", target = "attendenceDate")
-    @Mapping(source = "userId", target = "user")
     Attendence toEntity(AttendenceDTO attendenceDTO);
 
     default Attendence fromId(Long id) {

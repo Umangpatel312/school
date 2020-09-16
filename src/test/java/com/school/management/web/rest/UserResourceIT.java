@@ -1,6 +1,7 @@
 package com.school.management.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasItems;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -45,7 +46,7 @@ import com.school.management.web.rest.vm.ManagedUserVM;
  * Integration tests for the {@link UserResource} REST controller.
  */
 @AutoConfigureMockMvc
-@WithMockUser(username = "johndoe", authorities = AuthoritiesConstants.ADMIN)
+@WithMockUser(username = "johndoe", authorities = {AuthoritiesConstants.ADMIN})
 @SpringBootTest(classes = SchoolApp.class)
 public class UserResourceIT {
   private final static Logger log = LoggerFactory.getLogger(UserResourceIT.class);
@@ -592,23 +593,90 @@ public class UserResourceIT {
   @Transactional
   public void getStudentsByAddedHim() throws Exception {
     // Initialize the database
-    userRepository.saveAndFlush(user);
-    // int databaseSizeBeforeUpdate = userRepository.findAll().size();
+    addUserToDB();
+    // log.info("===> three user added: {}", tempUser1.getLogin());
+    restUserMockMvc
+        .perform(get("/api/studentsAdded/{role}", AuthoritiesConstants.USER)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.length()", is(2)))
+        .andExpect(jsonPath("$.[*].login").value(hasItem(UPDATED_LOGIN)))
+        .andExpect(jsonPath("$.[*].firstName").value(hasItem(UPDATED_FIRSTNAME)))
+        .andExpect(jsonPath("$.[*].lastName").value(hasItem(UPDATED_LASTNAME)))
+        .andExpect(jsonPath("$.[*].email").value(hasItem(UPDATED_EMAIL)))
+        .andExpect(jsonPath("$.[*].imageUrl").value(hasItem(UPDATED_IMAGEURL)))
+        .andExpect(jsonPath("$.[*].langKey").value(hasItem(UPDATED_LANGKEY)));
 
+  }
+
+  @Test
+  @Transactional
+  public void getTeachersByAddedHim() throws Exception {
+    addUserToDB();
+    // log.info("===> three user added: {}", tempUser1.getLogin());
+    restUserMockMvc
+        .perform(get("/api/studentsAdded/{role}", AuthoritiesConstants.TEACHER)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.length()", is(1)))
+        .andExpect(jsonPath("$.[*].login").value(hasItem("umang")))
+        .andExpect(jsonPath("$.[*].firstName").value(hasItem("umang")))
+        .andExpect(jsonPath("$.[*].lastName").value(hasItem("patel")))
+        .andExpect(jsonPath("$.[*].email").value(hasItem("umang@gmail.com")));
+  }
+
+  @Test
+  @Transactional
+  public void getUserByRoleForUser() throws Exception {
+
+    addUserToDB();
+    log.debug("====list-size:{}", userRepository.findAll().size());
+    // log.info("===> three user added: {}", tempUser1.getLogin());
+    restUserMockMvc
+        .perform(get("/api/getUserByRole/{role}", AuthoritiesConstants.USER)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.length()", is(3)));
+  }
+
+  @Test
+  @Transactional
+  public void getUserByRoleForTeacher() throws Exception {
+    addUserToDB();
+    // log.info("===> three user added: {}", tempUser1.getLogin());
+    restUserMockMvc
+        .perform(get("/api//getUserByRole/{role}", AuthoritiesConstants.TEACHER)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.length()", is(1)));
+  }
+
+  // add user to db for making testing more suitable
+  private void addUserToDB() {
     // Update the user
+    Authority au1 = new Authority();
+    Authority au2 = new Authority();
+    Authority au3 = new Authority();
+    au1.setName(AuthoritiesConstants.TEACHER);
+    au2.setName(AuthoritiesConstants.USER);
+    au3.setName(AuthoritiesConstants.ADMIN);
+    user.setAuthorities(new HashSet<Authority>(Arrays.asList(au1, au2, au3)));
+    userRepository.saveAndFlush(user);
+
     User updatedUser = userRepository.findById(user.getId()).get();
 
     User tempUser1 = new User();
     tempUser1.setLogin("umang");
     tempUser1.setPassword(RandomStringUtils.random(60));
+    tempUser1.setFirstName("umang");
+    tempUser1.setLastName("patel");
+    tempUser1.setEmail("umang@gmail.com");
     tempUser1.setActivated(updatedUser.getActivated());
     tempUser1.setCreatedBy(DEFAULT_LOGIN);
     tempUser1.setCreatedDate(updatedUser.getCreatedDate());
     tempUser1.setLastModifiedBy(updatedUser.getLastModifiedBy());
     tempUser1.setLastModifiedDate(updatedUser.getLastModifiedDate());
-    Authority au1 = new Authority();
+    au1 = new Authority();
+    au2 = new Authority();
     au1.setName(AuthoritiesConstants.TEACHER);
-    tempUser1.setAuthorities(new HashSet<Authority>(Arrays.asList(au1)));
+    au2.setName(AuthoritiesConstants.USER);
+    tempUser1.setAuthorities(new HashSet<Authority>(Arrays.asList(au1, au2)));
     userRepository.saveAndFlush(tempUser1);
 
     tempUser1 = userRepository.findOneByLogin(tempUser1.getLogin()).get();
@@ -630,17 +698,24 @@ public class UserResourceIT {
     au.setName(AuthoritiesConstants.USER);
     tempUser.setAuthorities(new HashSet<Authority>(Arrays.asList(au)));
     userRepository.saveAndFlush(tempUser);
-    log.info("===> three user added: {}", tempUser1.getLogin());
-    restUserMockMvc
-        .perform(get("/api/studentsAdded/{role}", AuthoritiesConstants.USER)
-            .accept(MediaType.APPLICATION_JSON))
-        .andDo(print()).andExpect(status().isOk())
-        .andExpect(jsonPath("$.[*].login").value(hasItem(UPDATED_LOGIN)))
-        .andExpect(jsonPath("$.[*].firstName").value(hasItem(UPDATED_FIRSTNAME)))
-        .andExpect(jsonPath("$.[*].lastName").value(hasItem(UPDATED_LASTNAME)))
-        .andExpect(jsonPath("$.[*].email").value(hasItem(UPDATED_EMAIL)))
-        .andExpect(jsonPath("$.[*].imageUrl").value(hasItem(UPDATED_IMAGEURL)))
-        .andExpect(jsonPath("$.[*].langKey").value(hasItem(UPDATED_LANGKEY)));
+
+    tempUser = new User();
+    tempUser.setLogin("jeet");
+    tempUser.setPassword(RandomStringUtils.random(60));
+    tempUser.setFirstName(UPDATED_FIRSTNAME);
+    tempUser.setLastName(UPDATED_LASTNAME);
+    tempUser.setEmail("jeet@gmail.com");
+    tempUser.setActivated(updatedUser.getActivated());
+    tempUser.setImageUrl(UPDATED_IMAGEURL);
+    tempUser.setLangKey(UPDATED_LANGKEY);
+    tempUser.setCreatedBy(user.getLogin());
+    tempUser.setCreatedDate(updatedUser.getCreatedDate());
+    tempUser.setLastModifiedBy(updatedUser.getLastModifiedBy());
+    tempUser.setLastModifiedDate(updatedUser.getLastModifiedDate());
+    au = new Authority();
+    au.setName(AuthoritiesConstants.USER);
+    tempUser.setAuthorities(new HashSet<Authority>(Arrays.asList(au)));
+    userRepository.saveAndFlush(tempUser);
 
   }
 

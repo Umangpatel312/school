@@ -29,6 +29,11 @@ export class UserService {
     return this.http.get<IUser[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
+  queryGetByRole(req?: String): Observable<HttpResponse<IUser[]>> {
+    // const options = createRequestOption(req);
+    return this.http.get<IUser[]>(SERVER_API_URL + `/api/getUserByRole/${req}`, { observe: 'response' });
+  }
+
   delete(login: string): Observable<{}> {
     return this.http.delete(`${this.resourceUrl}/${login}`);
   }

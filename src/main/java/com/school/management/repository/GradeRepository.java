@@ -10,4 +10,5 @@ import com.school.management.domain.Grade;
 @SuppressWarnings("unused")
 @Repository
 public interface GradeRepository extends JpaRepository<Grade, Long> {
+  public Grade findByGrade(int grade);
 }

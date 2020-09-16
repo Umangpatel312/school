@@ -11,6 +11,14 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring", uses = {})
 public interface GradeMapper extends EntityMapper<GradeDTO, Grade> {
+
+    @Mapping(target = "attendences", ignore = true)
+    @Mapping(target = "removeAttendence", ignore = true)
+    @Mapping(target = "gradeStudents", ignore = true)
+    @Mapping(target = "removeGradeStudent", ignore = true)
+    @Mapping(target = "gradeTeacher", ignore = true)
+    Grade toEntity(GradeDTO gradeDTO);
+
     default Grade fromId(Long id) {
         if (id == null) {
             return null;

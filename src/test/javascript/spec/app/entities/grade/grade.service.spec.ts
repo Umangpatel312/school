@@ -20,7 +20,7 @@ describe('Service Tests', () => {
       service = injector.get(GradeService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new Grade(0, 0, 'AAAAAAA');
+      elemDefault = new Grade(0, 0);
     });
 
     describe('Service methods', () => {
@@ -55,7 +55,6 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             grade: 1,
-            division: 'BBBBBB',
           },
           elemDefault
         );
@@ -73,7 +72,6 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             grade: 1,
-            division: 'BBBBBB',
           },
           elemDefault
         );

@@ -23,9 +23,9 @@
             <thead>
                 <tr>
                     <th scope="col" ><span>ID</span></th>
+                    <th scope="col" ><span>User</span></th>
                     <th scope="col" ><span>Grade</span></th>
                     <th scope="col" ><span>Attendence Date</span></th>
-                    <th scope="col" ><span>User</span></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -33,17 +33,17 @@
                 <tr *ngFor="let attendence of attendences ;trackBy: trackId">
                     <td><a [routerLink]="['/attendence', attendence.id, 'view']">{{ attendence.id }}</a></td>
                     <td>
+                        {{ attendence.userLogin }}
+                    </td>
+                    <td>
                         <div *ngIf="attendence.gradeId">
-                            <a [routerLink]="['/grade', attendence.gradeId , 'view']" >{{ attendence.gradeId }}</a>
+                            <a [routerLink]="['/grade', attendence.gradeId , 'view']" >{{ attendence.gradeGrade }}</a>
                         </div>
                     </td>
                     <td>
                         <div *ngIf="attendence.attendenceDateId">
-                            <a [routerLink]="['/attendence-date', attendence.attendenceDateId , 'view']" >{{ attendence.attendenceDateId }}</a>
+                            <a [routerLink]="['/attendence-date', attendence.attendenceDateId , 'view']" >{{ attendence.attendenceDateDate }}</a>
                         </div>
-                    </td>
-                    <td>
-                        {{ attendence.userLogin }}
                     </td>
                     <td class="text-right">
                         <div class="btn-group">

@@ -1,0 +1,31 @@
+{
+  "name": "GradeStudent",
+  "fields": [],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "gradeStudent",
+      "relationshipName": "user",
+      "otherEntityField": "login"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "grade",
+      "otherEntityRelationshipName": "gradeStudent",
+      "relationshipName": "grade",
+      "otherEntityField": "grade"
+    }
+  ],
+  "changelogDate": "20200912052714",
+  "entityTableName": "grade_student",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}

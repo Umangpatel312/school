@@ -1,11 +1,14 @@
 package com.school.management.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A Grade.
@@ -24,8 +27,17 @@ public class Grade implements Serializable {
     @Column(name = "grade")
     private Integer grade;
 
-    @Column(name = "division")
-    private String division;
+    @OneToMany(mappedBy = "grade")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    private Set<Attendence> attendences = new HashSet<>();
+
+    @OneToMany(mappedBy = "grade")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    private Set<GradeStudent> gradeStudents = new HashSet<>();
+
+    @OneToOne(mappedBy = "grade")
+    @JsonIgnore
+    private GradeTeacher gradeTeacher;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -49,17 +61,67 @@ public class Grade implements Serializable {
         this.grade = grade;
     }
 
-    public String getDivision() {
-        return division;
+    public Set<Attendence> getAttendences() {
+        return attendences;
     }
 
-    public Grade division(String division) {
-        this.division = division;
+    public Grade attendences(Set<Attendence> attendences) {
+        this.attendences = attendences;
         return this;
     }
 
-    public void setDivision(String division) {
-        this.division = division;
+    public Grade addAttendence(Attendence attendence) {
+        this.attendences.add(attendence);
+        attendence.setGrade(this);
+        return this;
+    }
+
+    public Grade removeAttendence(Attendence attendence) {
+        this.attendences.remove(attendence);
+        attendence.setGrade(null);
+        return this;
+    }
+
+    public void setAttendences(Set<Attendence> attendences) {
+        this.attendences = attendences;
+    }
+
+    public Set<GradeStudent> getGradeStudents() {
+        return gradeStudents;
+    }
+
+    public Grade gradeStudents(Set<GradeStudent> gradeStudents) {
+        this.gradeStudents = gradeStudents;
+        return this;
+    }
+
+    public Grade addGradeStudent(GradeStudent gradeStudent) {
+        this.gradeStudents.add(gradeStudent);
+        gradeStudent.setGrade(this);
+        return this;
+    }
+
+    public Grade removeGradeStudent(GradeStudent gradeStudent) {
+        this.gradeStudents.remove(gradeStudent);
+        gradeStudent.setGrade(null);
+        return this;
+    }
+
+    public void setGradeStudents(Set<GradeStudent> gradeStudents) {
+        this.gradeStudents = gradeStudents;
+    }
+
+    public GradeTeacher getGradeTeacher() {
+        return gradeTeacher;
+    }
+
+    public Grade gradeTeacher(GradeTeacher gradeTeacher) {
+        this.gradeTeacher = gradeTeacher;
+        return this;
+    }
+
+    public void setGradeTeacher(GradeTeacher gradeTeacher) {
+        this.gradeTeacher = gradeTeacher;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -85,7 +147,6 @@ public class Grade implements Serializable {
         return "Grade{" +
             "id=" + getId() +
             ", grade=" + getGrade() +
-            ", division='" + getDivision() + "'" +
             "}";
     }
 }

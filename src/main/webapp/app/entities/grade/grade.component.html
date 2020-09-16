@@ -24,7 +24,6 @@
                 <tr>
                     <th scope="col" ><span>ID</span></th>
                     <th scope="col" ><span>Grade</span></th>
-                    <th scope="col" ><span>Division</span></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -32,7 +31,6 @@
                 <tr *ngFor="let grade of grades ;trackBy: trackId">
                     <td><a [routerLink]="['/grade', grade.id, 'view']">{{ grade.id }}</a></td>
                     <td>{{ grade.grade }}</td>
-                    <td>{{ grade.division }}</td>
                     <td class="text-right">
                         <div class="btn-group">
                             <button type="submit"

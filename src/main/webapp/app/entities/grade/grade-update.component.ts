@@ -18,7 +18,6 @@ export class GradeUpdateComponent implements OnInit {
   editForm = this.fb.group({
     id: [],
     grade: [],
-    division: [],
   });
 
   constructor(protected gradeService: GradeService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
@@ -33,7 +32,6 @@ export class GradeUpdateComponent implements OnInit {
     this.editForm.patchValue({
       id: grade.id,
       grade: grade.grade,
-      division: grade.division,
     });
   }
 
@@ -56,7 +54,6 @@ export class GradeUpdateComponent implements OnInit {
       ...new Grade(),
       id: this.editForm.get(['id'])!.value,
       grade: this.editForm.get(['grade'])!.value,
-      division: this.editForm.get(['division'])!.value,
     };
   }
 

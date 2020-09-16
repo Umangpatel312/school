@@ -1,0 +1,40 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="attendenceStudent">
+            <h2><span>Attendence Student</span> {{ attendenceStudent.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span>Marked</span></dt>
+                <dd>
+                    <span>{{ attendenceStudent.marked }}</span>
+                </dd>
+                <dt><span>User</span></dt>
+                <dd>
+                    {{ attendenceStudent.userLogin }}
+                </dd>
+                <dt><span>Attendence</span></dt>
+                <dd>
+                    <div *ngIf="attendenceStudent.attendenceId">
+                        <a [routerLink]="['/attendence', attendenceStudent.attendenceId, 'view']">{{ attendenceStudent.attendenceId }}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/attendence-student', attendenceStudent.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

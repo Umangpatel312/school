@@ -16,6 +16,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 /**
  * REST controller for managing {@link com.school.management.domain.Grade}.
@@ -80,10 +81,15 @@ public class GradeResource {
     /**
      * {@code GET  /grades} : get all the grades.
      *
+     * @param filter the filter of the request.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of grades in body.
      */
     @GetMapping("/grades")
-    public List<GradeDTO> getAllGrades() {
+    public List<GradeDTO> getAllGrades(@RequestParam(required = false) String filter) {
+        if ("gradeteacher-is-null".equals(filter)) {
+            log.debug("REST request to get all Grades where gradeTeacher is null");
+            return gradeService.findAllWhereGradeTeacherIsNull();
+        }
         log.debug("REST request to get all Grades");
         return gradeService.findAll();
     }

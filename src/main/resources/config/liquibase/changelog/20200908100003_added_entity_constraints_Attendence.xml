@@ -8,6 +8,12 @@
     -->
     <changeSet id="20200908100003-2" author="jhipster">
         
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="attendence"
+                                 constraintName="fk_attendence_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+
         <addForeignKeyConstraint baseColumnNames="grade_id"
                                  baseTableName="attendence"
                                  constraintName="fk_attendence_grade_id"
@@ -20,11 +26,15 @@
                                  referencedColumnNames="id"
                                  referencedTableName="attendence_date"/>
 
-        <addForeignKeyConstraint baseColumnNames="user_id"
-                                 baseTableName="attendence"
-                                 constraintName="fk_attendence_user_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="jhi_user"/>
-
     </changeSet>
+    <changeSet  author="umang"  id="addUniqueConstraint-attendence">  
+    <addUniqueConstraint      
+            columnNames="user_id,grade_id,attendence_date_id"  
+            constraintName="attendence_unique_user_grade_date"  
+            deferrable="true"  
+            disabled="true"    
+            initiallyDeferred="true"  
+            tableName="attendence"   
+            validate="true"/>  
+</changeSet>
 </databaseChangeLog>

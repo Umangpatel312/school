@@ -35,9 +35,6 @@ public class GradeResourceIT {
     private static final Integer DEFAULT_GRADE = 1;
     private static final Integer UPDATED_GRADE = 2;
 
-    private static final String DEFAULT_DIVISION = "AAAAAAAAAA";
-    private static final String UPDATED_DIVISION = "BBBBBBBBBB";
-
     @Autowired
     private GradeRepository gradeRepository;
 
@@ -63,8 +60,7 @@ public class GradeResourceIT {
      */
     public static Grade createEntity(EntityManager em) {
         Grade grade = new Grade()
-            .grade(DEFAULT_GRADE)
-            .division(DEFAULT_DIVISION);
+            .grade(DEFAULT_GRADE);
         return grade;
     }
     /**
@@ -75,8 +71,7 @@ public class GradeResourceIT {
      */
     public static Grade createUpdatedEntity(EntityManager em) {
         Grade grade = new Grade()
-            .grade(UPDATED_GRADE)
-            .division(UPDATED_DIVISION);
+            .grade(UPDATED_GRADE);
         return grade;
     }
 
@@ -101,7 +96,6 @@ public class GradeResourceIT {
         assertThat(gradeList).hasSize(databaseSizeBeforeCreate + 1);
         Grade testGrade = gradeList.get(gradeList.size() - 1);
         assertThat(testGrade.getGrade()).isEqualTo(DEFAULT_GRADE);
-        assertThat(testGrade.getDivision()).isEqualTo(DEFAULT_DIVISION);
     }
 
     @Test
@@ -136,8 +130,7 @@ public class GradeResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(grade.getId().intValue())))
-            .andExpect(jsonPath("$.[*].grade").value(hasItem(DEFAULT_GRADE)))
-            .andExpect(jsonPath("$.[*].division").value(hasItem(DEFAULT_DIVISION)));
+            .andExpect(jsonPath("$.[*].grade").value(hasItem(DEFAULT_GRADE)));
     }
     
     @Test
@@ -151,8 +144,7 @@ public class GradeResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(grade.getId().intValue()))
-            .andExpect(jsonPath("$.grade").value(DEFAULT_GRADE))
-            .andExpect(jsonPath("$.division").value(DEFAULT_DIVISION));
+            .andExpect(jsonPath("$.grade").value(DEFAULT_GRADE));
     }
     @Test
     @Transactional
@@ -175,8 +167,7 @@ public class GradeResourceIT {
         // Disconnect from session so that the updates on updatedGrade are not directly saved in db
         em.detach(updatedGrade);
         updatedGrade
-            .grade(UPDATED_GRADE)
-            .division(UPDATED_DIVISION);
+            .grade(UPDATED_GRADE);
         GradeDTO gradeDTO = gradeMapper.toDto(updatedGrade);
 
         restGradeMockMvc.perform(put("/api/grades")
@@ -189,7 +180,6 @@ public class GradeResourceIT {
         assertThat(gradeList).hasSize(databaseSizeBeforeUpdate);
         Grade testGrade = gradeList.get(gradeList.size() - 1);
         assertThat(testGrade.getGrade()).isEqualTo(UPDATED_GRADE);
-        assertThat(testGrade.getDivision()).isEqualTo(UPDATED_DIVISION);
     }
 
     @Test

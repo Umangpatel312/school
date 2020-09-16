@@ -27,6 +27,17 @@
     <changeSet id="20200908095803-1-relations" author="jhipster">
 
     </changeSet>
+        <changeSet id="add constraints-attendence_date" author="umang">
+		<addUniqueConstraint      
+            columnNames="date"  
+            constraintName="attendence_date_unique_date"  
+            deferrable="true"  
+            disabled="true"    
+            initiallyDeferred="true"  
+            tableName="attendence_date"   
+            validate="true"/>
+    </changeSet>
+        
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
     <!--

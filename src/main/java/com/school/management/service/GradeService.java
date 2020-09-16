@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * Service Implementation for managing {@link Grade}.
@@ -59,6 +60,21 @@ public class GradeService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
+
+
+    /**
+     *  Get all the grades where GradeTeacher is {@code null}.
+     *  @return the list of entities.
+     */
+    @Transactional(readOnly = true) 
+    public List<GradeDTO> findAllWhereGradeTeacherIsNull() {
+        log.debug("Request to get all grades where GradeTeacher is null");
+        return StreamSupport
+            .stream(gradeRepository.findAll().spliterator(), false)
+            .filter(grade -> grade.getGradeTeacher() == null)
+            .map(gradeMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
 
     /**
      * Get one grade by id.

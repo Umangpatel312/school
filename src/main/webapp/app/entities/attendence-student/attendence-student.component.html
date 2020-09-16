@@ -1,0 +1,71 @@
+<div>
+    <h2 id="page-heading">
+        <span>Attendence Students</span>
+
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-attendence-student" [routerLink]="['/attendence-student/new']">
+            <fa-icon icon="plus"></fa-icon>
+            <span>
+            Create a new Attendence Student
+            </span>
+        </button>
+    </h2>
+
+    <jhi-alert-error></jhi-alert-error>
+
+    <jhi-alert></jhi-alert>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="attendenceStudents?.length === 0">
+        <span>No attendenceStudents found</span>
+    </div>
+
+    <div class="table-responsive" id="entities" *ngIf="attendenceStudents && attendenceStudents.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+                <tr>
+                    <th scope="col" ><span>ID</span></th>
+                    <th scope="col" ><span>Marked</span></th>
+                    <th scope="col" ><span>User</span></th>
+                    <th scope="col" ><span>Attendence</span></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let attendenceStudent of attendenceStudents ;trackBy: trackId">
+                    <td><a [routerLink]="['/attendence-student', attendenceStudent.id, 'view']">{{ attendenceStudent.id }}</a></td>
+                    <td>{{ attendenceStudent.marked }}</td>
+                    <td>
+                        {{ attendenceStudent.userLogin }}
+                    </td>
+                    <td>
+                        <div *ngIf="attendenceStudent.attendenceId">
+                            <a [routerLink]="['/attendence', attendenceStudent.attendenceId , 'view']" >{{ attendenceStudent.attendenceId }}</a>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/attendence-student', attendenceStudent.id, 'view']"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon icon="eye"></fa-icon>
+                                <span class="d-none d-md-inline">View</span>
+                            </button>
+
+                            <button type="submit"
+                                    [routerLink]="['/attendence-student', attendenceStudent.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline">Edit</span>
+                            </button>
+
+                            <button type="submit" (click)="delete(attendenceStudent)"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -4,13 +4,29 @@
     {
       "fieldName": "grade",
       "fieldType": "Integer"
-    },
-    {
-      "fieldName": "division",
-      "fieldType": "String"
     }
   ],
-  "relationships": [],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "attendence",
+      "otherEntityRelationshipName": "grade",
+      "relationshipName": "attendence"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "gradeStudent",
+      "otherEntityRelationshipName": "grade",
+      "relationshipName": "gradeStudent"
+    },
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "gradeTeacher",
+      "otherEntityRelationshipName": "grade",
+      "relationshipName": "gradeTeacher",
+      "ownerSide": false
+    }
+  ],
   "changelogDate": "20200908095903",
   "entityTableName": "grade",
   "dto": "mapstruct",

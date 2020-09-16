@@ -11,8 +11,6 @@ public class GradeDTO implements Serializable {
 
     private Integer grade;
 
-    private String division;
-
     
     public Long getId() {
         return id;
@@ -28,14 +26,6 @@ public class GradeDTO implements Serializable {
 
     public void setGrade(Integer grade) {
         this.grade = grade;
-    }
-
-    public String getDivision() {
-        return division;
-    }
-
-    public void setDivision(String division) {
-        this.division = division;
     }
 
     @Override
@@ -61,7 +51,6 @@ public class GradeDTO implements Serializable {
         return "GradeDTO{" +
             "id=" + getId() +
             ", grade=" + getGrade() +
-            ", division='" + getDivision() + "'" +
             "}";
     }
 }

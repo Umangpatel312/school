@@ -8,21 +8,21 @@
             <jhi-alert-error></jhi-alert-error>
 
             <dl class="row-md jh-entity-details">
+                <dt><span>User</span></dt>
+                <dd>
+                    {{ attendence.userLogin }}
+                </dd>
                 <dt><span>Grade</span></dt>
                 <dd>
                     <div *ngIf="attendence.gradeId">
-                        <a [routerLink]="['/grade', attendence.gradeId, 'view']">{{ attendence.gradeId }}</a>
+                        <a [routerLink]="['/grade', attendence.gradeId, 'view']">{{ attendence.gradeGrade }}</a>
                     </div>
                 </dd>
                 <dt><span>Attendence Date</span></dt>
                 <dd>
                     <div *ngIf="attendence.attendenceDateId">
-                        <a [routerLink]="['/attendence-date', attendence.attendenceDateId, 'view']">{{ attendence.attendenceDateId }}</a>
+                        <a [routerLink]="['/attendence-date', attendence.attendenceDateId, 'view']">{{ attendence.attendenceDateDate }}</a>
                     </div>
-                </dd>
-                <dt><span>User</span></dt>
-                <dd>
-                    {{ attendence.userLogin }}
                 </dd>
             </dl>
 

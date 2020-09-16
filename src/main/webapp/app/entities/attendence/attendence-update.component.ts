@@ -7,14 +7,14 @@ import { Observable } from 'rxjs';
 
 import { IAttendence, Attendence } from 'app/shared/model/attendence.model';
 import { AttendenceService } from './attendence.service';
+import { IUser } from 'app/core/user/user.model';
+import { UserService } from 'app/core/user/user.service';
 import { IGrade } from 'app/shared/model/grade.model';
 import { GradeService } from 'app/entities/grade/grade.service';
 import { IAttendenceDate } from 'app/shared/model/attendence-date.model';
 import { AttendenceDateService } from 'app/entities/attendence-date/attendence-date.service';
-import { IUser } from 'app/core/user/user.model';
-import { UserService } from 'app/core/user/user.service';
 
-type SelectableEntity = IGrade | IAttendenceDate | IUser;
+type SelectableEntity = IUser | IGrade | IAttendenceDate;
 
 @Component({
   selector: 'jhi-attendence-update',
@@ -22,22 +22,22 @@ type SelectableEntity = IGrade | IAttendenceDate | IUser;
 })
 export class AttendenceUpdateComponent implements OnInit {
   isSaving = false;
+  users: IUser[] = [];
   grades: IGrade[] = [];
   attendencedates: IAttendenceDate[] = [];
-  users: IUser[] = [];
 
   editForm = this.fb.group({
     id: [],
+    userId: [],
     gradeId: [],
     attendenceDateId: [],
-    userId: [],
   });
 
   constructor(
     protected attendenceService: AttendenceService,
+    protected userService: UserService,
     protected gradeService: GradeService,
     protected attendenceDateService: AttendenceDateService,
-    protected userService: UserService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
@@ -46,20 +46,20 @@ export class AttendenceUpdateComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ attendence }) => {
       this.updateForm(attendence);
 
+      this.userService.query().subscribe((res: HttpResponse<IUser[]>) => (this.users = res.body || []));
+
       this.gradeService.query().subscribe((res: HttpResponse<IGrade[]>) => (this.grades = res.body || []));
 
       this.attendenceDateService.query().subscribe((res: HttpResponse<IAttendenceDate[]>) => (this.attendencedates = res.body || []));
-
-      this.userService.query().subscribe((res: HttpResponse<IUser[]>) => (this.users = res.body || []));
     });
   }
 
   updateForm(attendence: IAttendence): void {
     this.editForm.patchValue({
       id: attendence.id,
+      userId: attendence.userId,
       gradeId: attendence.gradeId,
       attendenceDateId: attendence.attendenceDateId,
-      userId: attendence.userId,
     });
   }
 
@@ -81,9 +81,9 @@ export class AttendenceUpdateComponent implements OnInit {
     return {
       ...new Attendence(),
       id: this.editForm.get(['id'])!.value,
+      userId: this.editForm.get(['userId'])!.value,
       gradeId: this.editForm.get(['gradeId'])!.value,
       attendenceDateId: this.editForm.get(['attendenceDateId'])!.value,
-      userId: this.editForm.get(['userId'])!.value,
     };
   }
 

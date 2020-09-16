@@ -13,6 +13,9 @@ import org.mapstruct.*;
 public interface AttendenceDateMapper extends EntityMapper<AttendenceDateDTO, AttendenceDate> {
 
 
+    @Mapping(target = "attendences", ignore = true)
+    @Mapping(target = "removeAttendence", ignore = true)
+    AttendenceDate toEntity(AttendenceDateDTO attendenceDateDTO);
 
     default AttendenceDate fromId(Long id) {
         if (id == null) {
