@@ -1,0 +1,49 @@
+<div class="container ">
+
+  <h3 class="text-center">Take Student Attendence</h3>
+  <div class="row">
+    <div class="col">
+      <ngb-alert *ngIf="successMessage" type="danger" (close)="successMessage = ''">{{ successMessage }}
+      </ngb-alert>
+
+      <table class="table table-bordered table-hover text-center">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Login</th>
+            <th scope="col">Fill One</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let gradeStudent of attendenceStudent;let i=index">
+
+          <tr>
+            <td>{{gradeStudent.userId}}</td>
+            <td>{{gradeStudent.userLogin}}</td>
+            <td>
+              <div class="form-check mx-auto">
+                <input class="form-check-input" type="radio" name="{{i}}" id="radio1" value="P" checked
+                  (click)="onClickRadio(i,'P')">
+                <label class="form-check-label" for="radio1">
+                  present
+                </label>
+                &emsp;
+                <input class="form-check-input" type="radio" name="{{i}}" id="radio2" value="A"
+                  (click)="onClickRadio(i,'A')">
+                <label class="form-check-label" for="radio2">
+                  Absent
+                </label>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="form-group w-100 ">
+        <button type="submit" class="btn btn-primary w-100" (click)="onSubmit()">
+          submit
+        </button>
+      </div>
+
+
+    </div>
+  </div>
+</div>

@@ -1,5 +1,6 @@
 package com.school.management.service.dto;
 
+import com.school.management.domain.AttendenceDate;
 import java.time.Instant;
 import java.io.Serializable;
 
@@ -7,12 +8,12 @@ import java.io.Serializable;
  * A DTO for the {@link com.school.management.domain.AttendenceDate} entity.
  */
 public class AttendenceDateDTO implements Serializable {
-    
+
     private Long id;
 
     private Instant date;
 
-    
+
     public Long getId() {
         return id;
     }
@@ -27,6 +28,11 @@ public class AttendenceDateDTO implements Serializable {
 
     public void setDate(Instant date) {
         this.date = date;
+    }
+    public AttendenceDateDTO(){}
+    public AttendenceDateDTO(AttendenceDate attendenceDate){
+        this.id= attendenceDate.getId();
+        this.date=attendenceDate.getDate();
     }
 
     @Override

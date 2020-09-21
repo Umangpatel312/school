@@ -628,6 +628,8 @@ public class UserResourceIT {
   public void getUserByRoleForUser() throws Exception {
 
     addUserToDB();
+    List<User> users=userRepository.findAll();
+    log.info("users:{}",users);
     log.debug("====list-size:{}", userRepository.findAll().size());
     // log.info("===> three user added: {}", tempUser1.getLogin());
     restUserMockMvc
@@ -656,7 +658,7 @@ public class UserResourceIT {
     au1.setName(AuthoritiesConstants.TEACHER);
     au2.setName(AuthoritiesConstants.USER);
     au3.setName(AuthoritiesConstants.ADMIN);
-    user.setAuthorities(new HashSet<Authority>(Arrays.asList(au1, au2, au3)));
+    user.setAuthorities(new HashSet<>(Arrays.asList(au1, au2, au3)));
     userRepository.saveAndFlush(user);
 
     User updatedUser = userRepository.findById(user.getId()).get();

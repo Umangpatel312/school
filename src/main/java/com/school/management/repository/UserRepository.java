@@ -61,7 +61,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
   // Page<User> findAllByCreatedByAndAuthoritiesContains(String login, Authority authority,
   // Pageable pageable);
 
-  @Query("select distinct u from User u join u.authorities au group by u having count(u.id)=?1")
-  List<User> findAllByAuthoritiesIn(long size);
+  @Query("select distinct u from User u join u.authorities au group by u "
+      + "having count(u.id)=?1")
+  List<User> findAllByAuthoritiesIn(long size,String authority);
 
 }

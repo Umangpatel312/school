@@ -1,16 +1,19 @@
 package com.school.management.service;
 
-import java.sql.Date;
+import com.school.management.service.dto.AttendenceDateDTO;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
-import java.util.Calendar;
+import java.time.temporal.ChronoUnit;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.school.management.domain.Attendence;
@@ -107,32 +110,53 @@ public class AttendenceStudentService {
     GradeTeacher gradeTeacher = gradeTeacherRepository.findGradeByTeacher();
     attendence.setGrade(gradeTeacher.getGrade());
     attendence.setUser(gradeTeacher.getUser());
-    // AttendenceStudent attendenceStudent = null;
+    checkUserAlreadyTakenAttendence(attendence);
     List<AttendenceStudent> listOfAttendenceStudent = attendenceStudentDTO.stream()
         .map(attendenceStudentMapper::toEntity).collect(Collectors.toList());
     for (AttendenceStudent attendenceStudent : listOfAttendenceStudent) {
-      log.debug("att:{}", attendenceStudent.getAttendence());
-      log.debug("att:{}", attendenceStudent);
       attendence.addAttendenceStudent(attendenceStudent);
     }
-    List<AttendenceStudentDTO> listOfResponse =
-        attendenceRepository.save(attendence).getAttendenceStudents().stream()
-            .map(attendenceStudentMapper::toDto).collect(Collectors.toList());
-    return listOfResponse;
+    return attendenceRepository.save(attendence).getAttendenceStudents().stream()
+        .map(attendenceStudentMapper::toDto).collect(Collectors.toList());
+  }
+
+  private void checkUserAlreadyTakenAttendence(@NotNull Attendence newAttendence) {
+    Attendence tempAttendence = attendenceRepository.findOneByUserIdAndAttendenceDateIdAndGradeId(
+        newAttendence.getUser().getId(), newAttendence.getAttendenceDate().getId(),
+        newAttendence.getGrade().getId());
+    if (tempAttendence!=null ) {
+      throw new AttendenceAlreadyExist();
+    }
   }
 
   private AttendenceDate getDate() {
-    Date date = new Date(Calendar.getInstance().getTime().getTime());
-    log.info("date:{}", date);
-    LocalDate dateLocal = date.toLocalDate();
-    Instant instant = dateLocal.atStartOfDay(ZoneOffset.UTC).toInstant();
-    AttendenceDate attendenceDate = attendenceDateRepository.findByDate(instant);
-    log.debug("" + attendenceDate);
+    Instant instant = Instant.now();
+      instant = instant.truncatedTo( ChronoUnit.DAYS );
+      AttendenceDate attendenceDate = attendenceDateRepository.findByDate(instant);
+    log.info("zone:===={}", instant);
     if (attendenceDate == null) {
       attendenceDate = new AttendenceDate();
       attendenceDate.setDate(instant);
+      attendenceDate = attendenceDateRepository.save(attendenceDate);
     }
     log.debug("date:{}", attendenceDate);
     return attendenceDate;
+  }
+
+  public List<AttendenceStudentDTO> findByDate(@NotNull LocalDate localDate) {
+    log.info("AttendenceStudentDTO---date service:{}", localDate);
+      Instant instant = Instant.now().truncatedTo( ChronoUnit.DAYS );
+      return attendenceStudentRepository.findByDate(instant).stream()
+        .map(attendenceStudentMapper::toDto).collect(Collectors.toList());
+  }
+
+
+    public Page<AttendenceDateDTO> findDateByTeacher(@NotNull LocalDate fromDate,@NotNull LocalDate toDate,
+        Pageable pageable) {
+        Instant from = fromDate.atStartOfDay().toInstant(ZoneOffset.UTC);
+        Instant to = toDate.atStartOfDay().toInstant(ZoneOffset.UTC);
+        log.info("from:---{}\n To:---{}", from,to);
+      Page<AttendenceDate> page= attendenceDateRepository.findDateByTeacher(from,to,pageable);
+      return  page.map(AttendenceDateDTO::new);
   }
 }

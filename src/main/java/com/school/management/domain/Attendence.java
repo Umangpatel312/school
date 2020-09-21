@@ -41,8 +41,7 @@ public class Attendence extends AbstractAuditingEntity implements Serializable {
   @JsonIgnoreProperties(value = "attendences", allowSetters = true)
   private Grade grade;
 
-  @ManyToOne(
-      cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST})
+  @ManyToOne
   @JsonIgnoreProperties(value = "attendences", allowSetters = true)
   private AttendenceDate attendenceDate;
 

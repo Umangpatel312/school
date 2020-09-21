@@ -4,6 +4,8 @@ import com.school.management.service.AuditEventService;
 
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +28,7 @@ import java.util.List;
 public class AuditResource {
 
     private final AuditEventService auditEventService;
+    private final static Logger log = LoggerFactory.getLogger(AuditResource.class);
 
     public AuditResource(AuditEventService auditEventService) {
         this.auditEventService = auditEventService;
@@ -57,7 +60,7 @@ public class AuditResource {
         @RequestParam(value = "fromDate") LocalDate fromDate,
         @RequestParam(value = "toDate") LocalDate toDate,
         Pageable pageable) {
-
+        log.info("audit date:{}", fromDate);
         Instant from = fromDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
         Instant to = toDate.atStartOfDay(ZoneId.systemDefault()).plusDays(1).toInstant();
 

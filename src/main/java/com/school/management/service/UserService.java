@@ -322,7 +322,7 @@ public class UserService {
 
     long roleId = AuthoritiesConstants.map.get(role);
     log.info("service get by role:{}", role);
-    List<User> listOfUser = userRepository.findAllByAuthoritiesIn(roleId);
+    List<User> listOfUser = userRepository.findAllByAuthoritiesIn(roleId,role);
     log.info("listOfuser:" + listOfUser);
     return listOfUser.stream().map(UserDTO::new).collect(Collectors.toList());
   }

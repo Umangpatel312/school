@@ -1,0 +1,31 @@
+<div class="container">
+
+  <!-- {{attendenceStudent|json}}  -->
+
+  <div class="row">
+    <h3>student attendence details</h3>
+
+    <div class="col col-md-8 offset-md-2">
+      <span>Filter</span> <input type="text" [(ngModel)]="filter" class="form-control mb-3"
+        placeholder="enter username for filter">
+      <table class="table table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Username</th>
+            <th scope="col">Marked</th>
+            <th scope="col">CreatedBy</th>
+          </tr>
+        </thead>
+        <tr *ngFor="let student of (attendenceStudent | pureFilter:filter:'userLogin' | orderBy:orderProp:reverse)">
+          <td>{{student.id}}</td>
+          <td>{{student.userLogin}}</td>
+          <td>{{student.marked}}</td>
+          <td>{{student.createdBy }}</td>
+        </tr>
+      </table>
+    </div>
+
+  </div>
+
+</div>

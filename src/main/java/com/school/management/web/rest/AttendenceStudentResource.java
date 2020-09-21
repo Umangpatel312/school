@@ -1,12 +1,18 @@
 package com.school.management.web.rest;
 
+import com.school.management.service.dto.AttendenceDateDTO;
+import io.github.jhipster.web.util.PaginationUtil;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,12 +22,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.school.management.service.AttendenceStudentService;
 import com.school.management.service.dto.AttendenceStudentDTO;
 import com.school.management.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 /**
  * REST controller for managing {@link com.school.management.domain.AttendenceStudent}.
@@ -140,4 +148,27 @@ public class AttendenceStudentResource {
         attendenceStudentService.createAttendence(attendenceStudentDTO);
     return new ResponseEntity<>(listOfStudentDTO, HttpStatus.CREATED);
   }
+
+  @GetMapping("/getAttendenceStudent")
+  public ResponseEntity<?> getAttendenceStudentByDate(@RequestParam("date") LocalDate localDate) {
+    log.info("date;{}", localDate);
+
+    List<AttendenceStudentDTO> listOfDTO = attendenceStudentService.findByDate(localDate);
+    return new ResponseEntity<>(listOfDTO, HttpStatus.OK);
+  }
+
+    @GetMapping("/getAttendenceDateByTeacher")
+    public ResponseEntity<List<AttendenceDateDTO>> getDatesByTeacher(
+        @RequestParam(value = "fromDate") LocalDate fromDate,
+        @RequestParam(value = "toDate") LocalDate toDate,
+        Pageable pageable) {
+        log.info("from date:{}", fromDate);
+        log.info("to date:{}", toDate);
+
+        Page<AttendenceDateDTO> page = attendenceStudentService.findDateByTeacher(fromDate, toDate, pageable);
+        HttpHeaders headers = PaginationUtil
+            .generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
 }

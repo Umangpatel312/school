@@ -1,22 +1,36 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GradeStudentService } from 'app/entities/grade-student/grade-student.service';
 import { IGradeStudent } from 'app/shared/model/grade-student.model';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import { IAttendenceStudent } from 'app/shared/model/attendence-student.model';
 import { AttendenceStudentService } from 'app/entities/attendence-student/attendence-student.service';
+import { debounceTime } from 'rxjs/operators';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'jhi-app-student-attendence',
-  templateUrl: './student-attendence.html',
+  templateUrl: './student-attendence.component.html',
 })
 export class StudentAttendenceComponent implements OnInit, OnDestroy {
-  currentAccount: Account | null = null;
+  private _success = new Subject<string>();
+  successMessage = '';
+  // flagSuccess = '';
   gradeStudent: IGradeStudent[] | null = null;
   gradeStudentSubscription?: Subscription;
   attendenceStudent: IAttendenceStudent[] = [];
-  constructor(private gradeStudentService: GradeStudentService, private attendenceStudentService: AttendenceStudentService) {}
+  constructor(
+    private gradeStudentService: GradeStudentService,
+    private attendenceStudentService: AttendenceStudentService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
+    this._success.subscribe(message => {
+      this.successMessage = message;
+      console.log(message);
+    });
+    this._success.pipe(debounceTime(5000)).subscribe(() => (this.successMessage = ''));
     this.gradeStudentSubscription = this.gradeStudentService.getStudentByTeacher().subscribe(response => {
       console.log(response);
       this.gradeStudent = response.body;
@@ -46,7 +60,22 @@ export class StudentAttendenceComponent implements OnInit, OnDestroy {
   }
   onSubmit(): void {
     console.log(this.attendenceStudent);
-    this.attendenceStudentService.takeAttendence(this.attendenceStudent).subscribe(response => console.log(response));
+    this.attendenceStudentService.takeAttendence(this.attendenceStudent).subscribe(
+      response => {
+        console.log(response);
+        this.goToAttendenceView();
+      },
+      err => {
+        console.log(err);
+        this.changeSuccessMessage(err);
+      }
+    );
+  }
+  goToAttendenceView(): void {
+    this.router.navigate(['./view'], { relativeTo: this.route });
+  }
+  public changeSuccessMessage(error: any): void {
+    this._success.next(error.error.title);
   }
 }
 // export class StudentAttendenceComponent implements OnInit, OnDestroy {

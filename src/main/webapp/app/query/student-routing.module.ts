@@ -9,7 +9,7 @@ import { RouterModule } from '@angular/router';
         loadChildren: () => import('./student/student.module').then(m => m.StudentModule),
       },
       {
-        path: 'studentAttedence',
+        path: 'studentAttendence',
         loadChildren: () => import('./attendence/student-attendence.module').then(m => m.StudentAttendenceModule),
       },
     ]),

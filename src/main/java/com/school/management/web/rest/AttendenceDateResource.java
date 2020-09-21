@@ -1,5 +1,7 @@
 package com.school.management.web.rest;
 
+import com.school.management.domain.Attendence;
+import com.school.management.domain.AttendenceDate;
 import com.school.management.service.AttendenceDateService;
 import com.school.management.web.rest.errors.BadRequestAlertException;
 import com.school.management.service.dto.AttendenceDateDTO;

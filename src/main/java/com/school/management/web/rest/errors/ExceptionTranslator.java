@@ -100,7 +100,8 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     @ExceptionHandler
     public ResponseEntity<Problem> handleUsernameAlreadyUsedException(com.school.management.service.UsernameAlreadyUsedException ex, NativeWebRequest request) {
         LoginAlreadyUsedException problem = new LoginAlreadyUsedException();
-        return create(problem, request, HeaderUtil.createFailureAlert(applicationName,  false, problem.getEntityName(), problem.getErrorKey(), problem.getMessage()));
+        return create(problem, request, HeaderUtil.createFailureAlert(applicationName,
+            false, problem.getEntityName(), problem.getErrorKey(), problem.getMessage()));
     }
 
     @ExceptionHandler
@@ -120,5 +121,13 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
             .with(MESSAGE_KEY, ErrorConstants.ERR_CONCURRENCY_FAILURE)
             .build();
         return create(ex, problem, request);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleAttendenceAlreadyExist(com.school.management.service.AttendenceAlreadyExist ex, NativeWebRequest request) {
+        AttendenceAlreadyExist problem=new AttendenceAlreadyExist();
+        return create(problem, request, HeaderUtil.createFailureAlert(applicationName, false,
+            problem.getEntityName(),
+            problem.getErrorKey(), problem.getMessage()));
     }
 }

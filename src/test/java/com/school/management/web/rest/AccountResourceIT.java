@@ -2,6 +2,7 @@ package com.school.management.web.rest;
 
 import com.school.management.SchoolApp;
 import com.school.management.config.Constants;
+import com.school.management.domain.Authority;
 import com.school.management.domain.User;
 import com.school.management.repository.AuthorityRepository;
 import com.school.management.repository.UserRepository;
@@ -80,7 +81,7 @@ public class AccountResourceIT {
     @Test
     public void testGetExistingAccount() throws Exception {
         Set<String> authorities = new HashSet<>();
-        authorities.add(AuthoritiesConstants.ADMIN);
+        authorities.add(AuthoritiesConstants.USER);
 
         UserDTO user = new UserDTO();
         user.setLogin(TEST_USER_LOGIN);
@@ -102,7 +103,8 @@ public class AccountResourceIT {
             .andExpect(jsonPath("$.email").value("john.doe@jhipster.com"))
             .andExpect(jsonPath("$.imageUrl").value("http://placehold.it/50x50"))
             .andExpect(jsonPath("$.langKey").value("en"))
-            .andExpect(jsonPath("$.authorities").value(AuthoritiesConstants.ADMIN));
+            .andExpect(jsonPath("$.authorities").value(AuthoritiesConstants.USER));
+        userService.deleteUser(TEST_USER_LOGIN);
     }
 
     @Test
@@ -679,6 +681,7 @@ public class AccountResourceIT {
         user.setActivated(true);
         user.setLogin("password-reset");
         user.setEmail("password-reset@example.com");
+
         userRepository.saveAndFlush(user);
 
         restAccountMockMvc.perform(post("/api/account/reset-password/init")
