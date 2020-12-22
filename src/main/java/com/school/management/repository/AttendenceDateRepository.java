@@ -1,5 +1,6 @@
 package com.school.management.repository;
 
+import com.school.management.domain.AttendenceStudent;
 import com.school.management.service.dto.AttendenceDateDTO;
 import java.time.Instant;
 import java.time.LocalDate;

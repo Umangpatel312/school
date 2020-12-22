@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.school.management.config.Constants;
@@ -210,8 +211,8 @@ public class UserResource {
    * TODO: role should not be passed in the URL It should be extracted from the User Login from the
    * SecurityUtils String login = SecurityUtils.getCurrentUserLogin().get(); User user =
    * userRepo.getBYLogin(..); user.getAuthority
-   * 
-   * 
+   *
+   *
    * Above logic should happen in service. You should just call `Page<UserDTO> page =
    * userService.findAllByCreatedBy(login, pageable);`
    */
@@ -235,4 +236,5 @@ public class UserResource {
     List<UserDTO> listOfUsersDTO = userService.findAllByRole(role);
     return new ResponseEntity<>(listOfUsersDTO, HttpStatus.OK);
   }
+
 }

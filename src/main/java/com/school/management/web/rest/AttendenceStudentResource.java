@@ -142,7 +142,7 @@ public class AttendenceStudentResource {
    * custom api here
    */
   @PostMapping("/takeAttendence-student")
-  public ResponseEntity<?> attendenceStudent(
+  public ResponseEntity<List<AttendenceStudentDTO>> attendenceStudent(
       @RequestBody List<AttendenceStudentDTO> attendenceStudentDTO) {
     List<AttendenceStudentDTO> listOfStudentDTO =
         attendenceStudentService.createAttendence(attendenceStudentDTO);
@@ -150,7 +150,7 @@ public class AttendenceStudentResource {
   }
 
   @GetMapping("/getAttendenceStudent")
-  public ResponseEntity<?> getAttendenceStudentByDate(@RequestParam("date") LocalDate localDate) {
+  public ResponseEntity<List<AttendenceStudentDTO>> getAttendenceStudentByDate(@RequestParam("date") LocalDate localDate) {
     log.info("date;{}", localDate);
 
     List<AttendenceStudentDTO> listOfDTO = attendenceStudentService.findByDate(localDate);
@@ -169,6 +169,15 @@ public class AttendenceStudentResource {
         HttpHeaders headers = PaginationUtil
             .generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/getAttendencesByStudent")
+    public ResponseEntity<List<AttendenceStudentDTO>> getAttendenceByStudent(
+        @RequestParam(value = "fromDate") LocalDate fromDate,
+        @RequestParam(value = "toDate") LocalDate toDate
+    ){
+      List<AttendenceStudentDTO> listOfStudent=attendenceStudentService.findByStudent(fromDate,toDate);
+      return new ResponseEntity<>(listOfStudent,HttpStatus.OK);
     }
 
 }

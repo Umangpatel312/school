@@ -411,6 +411,7 @@ public class AttendenceStudentResourceIT {
         List<AttendenceStudent> listOfStudent = getStudent();
         AttendenceStudentMapper mapper = new AttendenceStudentMapperImpl();
         List<AttendenceStudentDTO> listOfStudentDto = mapper.toDto(listOfStudent);
+        log.info("dto:{},{}",listOfStudentDto,listOfStudent);
         attendenceStudentService.createAttendence(listOfStudentDto);
         int databaseSizeBeforeCreate = attendenceStudentRepository.findAll().size();
         restAttendenceStudentMockMvc.perform(get("/api/getAttendenceStudent")
@@ -469,6 +470,7 @@ public class AttendenceStudentResourceIT {
         assertThat(attendenceStudentList).hasSize(databaseSizeBeforeCreate);
 
     }
+
     private List<AttendenceStudent> getStudent() {
         User tempUser = new User();
         tempUser.setLogin("umang");
@@ -483,6 +485,7 @@ public class AttendenceStudentResourceIT {
         tempUser = userRepository.saveAndFlush(tempUser);
         log.info("tempUser:{},{}",tempUser.getId(),tempUser);
         log.info("tempUser:{},{}",user.getId(),user);
+        log.info("user:{}",userRepository.findAll());
         AttendenceStudent attendenceStudent1 = new AttendenceStudent();
         AttendenceStudent attendenceStudent2 = new AttendenceStudent();
         attendenceStudent1.setMarked(DEFAULT_MARKED);
@@ -492,7 +495,7 @@ public class AttendenceStudentResourceIT {
         tempUser2.setId(tempUser.getId());
         User tempUser1 = new User();
         tempUser1.setId(user.getId());
-
+        log.info("tempuser1:{},tempUser2:{}",user.getId(),tempUser.getId());
         attendenceStudent1.setUser(tempUser2);
         attendenceStudent2.setUser(tempUser1);
 

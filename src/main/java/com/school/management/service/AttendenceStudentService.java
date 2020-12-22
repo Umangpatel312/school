@@ -1,5 +1,7 @@
 package com.school.management.service;
 
+import com.school.management.domain.User;
+import com.school.management.repository.UserRepository;
 import com.school.management.service.dto.AttendenceDateDTO;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -12,6 +14,7 @@ import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -42,6 +45,9 @@ public class AttendenceStudentService {
   private final AttendenceStudentMapper attendenceStudentMapper;
   private final AttendenceDateRepository attendenceDateRepository;
   private final GradeTeacherRepository gradeTeacherRepository;
+
+  @Autowired
+  private UserRepository userRepository;
 
   public AttendenceStudentService(AttendenceStudentRepository attendenceStudentRepository,
       AttendenceStudentMapper attendenceStudentMapper, AttendenceRepository attendenceRepository,
@@ -102,20 +108,29 @@ public class AttendenceStudentService {
     attendenceStudentRepository.deleteById(id);
   }
 
+
+    @Transactional
   public List<AttendenceStudentDTO> createAttendence(
       List<AttendenceStudentDTO> attendenceStudentDTO) {
     AttendenceDate attendenceDate = getDate();
-    Attendence attendence = new Attendence();
+
+    Attendence attendence = new Attendence();//Attendence AttendenceStudent AttendenceDate
     attendence.setAttendenceDate(attendenceDate);
+
     GradeTeacher gradeTeacher = gradeTeacherRepository.findGradeByTeacher();
     attendence.setGrade(gradeTeacher.getGrade());
     attendence.setUser(gradeTeacher.getUser());
+
     checkUserAlreadyTakenAttendence(attendence);
+
     List<AttendenceStudent> listOfAttendenceStudent = attendenceStudentDTO.stream()
         .map(attendenceStudentMapper::toEntity).collect(Collectors.toList());
+
+    //adding multiple student
     for (AttendenceStudent attendenceStudent : listOfAttendenceStudent) {
       attendence.addAttendenceStudent(attendenceStudent);
     }
+
     return attendenceRepository.save(attendence).getAttendenceStudents().stream()
         .map(attendenceStudentMapper::toDto).collect(Collectors.toList());
   }
@@ -130,8 +145,7 @@ public class AttendenceStudentService {
   }
 
   private AttendenceDate getDate() {
-    Instant instant = Instant.now();
-      instant = instant.truncatedTo( ChronoUnit.DAYS );
+    Instant instant = Instant.now().truncatedTo( ChronoUnit.DAYS );
       AttendenceDate attendenceDate = attendenceDateRepository.findByDate(instant);
     log.info("zone:===={}", instant);
     if (attendenceDate == null) {
@@ -143,20 +157,41 @@ public class AttendenceStudentService {
     return attendenceDate;
   }
 
+  @Transactional
   public List<AttendenceStudentDTO> findByDate(@NotNull LocalDate localDate) {
-    log.info("AttendenceStudentDTO---date service:{}", localDate);
-      Instant instant = Instant.now().truncatedTo( ChronoUnit.DAYS );
+    Instant instant = localDate.atStartOfDay().toInstant(ZoneOffset.UTC);
+      instant = instant.truncatedTo( ChronoUnit.DAYS );
+      log.info("AttendenceStudentDTO---date service:{}", instant);
+      List<User>student= userRepository.findAll();
+      student.forEach(s->log.info("Id:{}.{}",s.getId(),s));
+
+      List<AttendenceStudent> att= attendenceStudentRepository.findAll();
+      att.forEach(s->log.info("Id:{}.{},user:{},{}",s.getId(),s,s.getUser().getId(),s.getUser()));
+
+      List<AttendenceStudent> list=attendenceStudentRepository.findByDate(instant);
+      list.forEach(l->log.info("student:{},{}",l.getUser().getId(),l.getUser()));
       return attendenceStudentRepository.findByDate(instant).stream()
         .map(attendenceStudentMapper::toDto).collect(Collectors.toList());
   }
 
-
+    @Transactional
     public Page<AttendenceDateDTO> findDateByTeacher(@NotNull LocalDate fromDate,@NotNull LocalDate toDate,
         Pageable pageable) {
         Instant from = fromDate.atStartOfDay().toInstant(ZoneOffset.UTC);
         Instant to = toDate.atStartOfDay().toInstant(ZoneOffset.UTC);
-        log.info("from:---{}\n To:---{}", from,to);
+        log.info("from:---{},to:---{}", from,to);
       Page<AttendenceDate> page= attendenceDateRepository.findDateByTeacher(from,to,pageable);
+      log.info("date:{}",page);
       return  page.map(AttendenceDateDTO::new);
   }
+
+    @Transactional
+    public List<AttendenceStudentDTO> findByStudent(LocalDate fromDate, LocalDate toDate) {
+        Instant from = fromDate.atStartOfDay().toInstant(ZoneOffset.UTC);
+        Instant to = toDate.atStartOfDay().toInstant(ZoneOffset.UTC);
+      List<AttendenceStudent> listOStudents=
+          attendenceStudentRepository.findAttendenceByStudent(from,to);
+
+      return listOStudents.stream().map(attendenceStudentMapper::toDto).collect(Collectors.toList());
+    }
 }

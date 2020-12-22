@@ -49,7 +49,7 @@
       <tbody>
         <tr *ngFor="let attendenceDate of attendenceDates">
           <td>{{ attendenceDate.id }}</td>
-          <td><span>{{ attendenceDate.date | date:'medium' }}</span></td>
+          <td><span>{{ attendenceDate.date | date:'mediumDate' }}</span></td>
           <td class="text-md-right">
             <div class="btn-group">
               <button type="submit" [routerLink]="['../', 'detail',attendenceDate.date]" class="btn btn-info btn-sm">

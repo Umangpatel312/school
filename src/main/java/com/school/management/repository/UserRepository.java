@@ -47,7 +47,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
       + "and u.id in (select distinct u.id from User u join u.authorities au group by u having count(u.id)=?2)"
       + " or u.createdBy in (select u.login from User u "
       + "inner join u.authorities a where u.createdBy=?1 and u.id in (select distinct u.id from User u join u.authorities au group by u having count(u.id)=2))")
-  Page<User> findAllByCreatedBy(String login, long roleId, Pageable pageable);
+  Page<User> findAllUserByCreatedBy(String login, long roleId, Pageable pageable);
 
   /*
    * TODO: You don't need this method. JPA automatically creates the implementation for the method.
@@ -64,5 +64,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
   @Query("select distinct u from User u join u.authorities au group by u "
       + "having count(u.id)=?1")
   List<User> findAllByAuthoritiesIn(long size,String authority);
+
+
 
 }

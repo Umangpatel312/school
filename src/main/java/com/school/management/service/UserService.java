@@ -1,5 +1,6 @@
 package com.school.management.service;
 
+import com.school.management.domain.LombokTest;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
@@ -307,10 +308,8 @@ public class UserService {
        *
        */
       log.info("name:=={},{}", authority.getName(), roleId);
-      listOfUser = userRepository.findAllByCreatedBy(login, roleId, pageable);
-      // log.debug("listOfUser size:{}", listOfUser.size());
+      listOfUser = userRepository.findAllUserByCreatedBy(login, roleId, pageable);
     } else {
-      Set<Authority> set = Collections.singleton(authority);
       listOfUser = userRepository.findAllTeacherByCreatedBy(pageable);
     }
     log.debug("OUt listOfuser: size:{}", listOfUser.getSize());
@@ -318,12 +317,14 @@ public class UserService {
     return listOfUser.map(UserDTO::new);
   }
 
+
+  //TEACHER_ROLE
   public List<UserDTO> findAllByRole(String role) {
 
     long roleId = AuthoritiesConstants.map.get(role);
     log.info("service get by role:{}", role);
     List<User> listOfUser = userRepository.findAllByAuthoritiesIn(roleId,role);
-    log.info("listOfuser:" + listOfUser);
-    return listOfUser.stream().map(UserDTO::new).collect(Collectors.toList());
+//    log.info("listOfuser:" + listOfUser);
+      return listOfUser.stream().map(UserDTO::new).collect(Collectors.toList());
   }
 }

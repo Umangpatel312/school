@@ -1,0 +1,27 @@
+version: '3'
+services:
+  angular-school:
+    container_name: frontend
+    build:
+      context: /home/umang/angular-project/school
+    depends_on:
+      - school_backend
+    links:
+      - school_backend
+    environment:
+      - REST_API_URL=http://school_backend:8080/
+    ports:
+      - 9000:80
+  school-mysql:
+    extends:
+      file: src/main/docker/mysql.yml
+      service: school-mysql
+  school_backend:
+    container_name: school_backend
+    build: .
+    ports:
+      - '8080:8080'
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://school-mysql:3306/school?autoReconnect=true&useSSL=false
+    depends_on:
+      - school-mysql

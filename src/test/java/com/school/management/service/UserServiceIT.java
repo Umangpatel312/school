@@ -201,4 +201,17 @@ public class UserServiceIT {
             .isTrue();
     }
 
+//    @Test
+//    public void whenExceptionThrown_thenAssertionSucceeds() {
+//        Exception exception = assertThrows(NumberFormatException.class, () -> {
+//            Integer.parseInt("1a");
+//        });
+//
+//        String expectedMessage = "For input string";
+//        String actualMessage = exception.getMessage();
+//
+//        assertTrue(actualMessage.contains(expectedMessage));
+//    }
+
+
 }
